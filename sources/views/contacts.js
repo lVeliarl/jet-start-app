@@ -47,7 +47,6 @@ export default class ContactsView extends JetView {
 	}
 
 	init() {
-		console.log(contacts);
 		let contactsList = this.$$("contacts");
 		contactsList.sync(contacts);
 		this.$$("contactsInfo").bind(contactsList);

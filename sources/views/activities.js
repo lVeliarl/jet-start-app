@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {activities} from "../models/activities";
 import {activityTypes} from "../models/activityTypes";
+import {contacts} from "../models/contacts";
 
 export default class ActivitiesView extends JetView {
 	config() {
@@ -32,10 +33,10 @@ export default class ActivitiesView extends JetView {
 					select: true,
 					columns: [
 						{id: "checkActivity", header: "", template: "{common.checkbox()}", width: 50},
-						{id: "TypeID", header: ["Activity type", {content: "textFilter"}], template: "#TypeID#", collection: activityTypes, sort: "string"},
-						{id: "DueDate", header: ["Due date", {content: "textFilter"}], template: "#DueDate#", sort: "string"},
+						{id: "TypeID", header: ["Activity type", {content: "selectFilter"}], template: "#TypeID#", options: activityTypes, sort: "string"},
+						{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], template: "#DueDate#", sort: "string"},
 						{id: "Details", header: ["Details", {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-						{id: "ContactID", header: ["Contact", {content: "textFilter"}], template: "#ContactID#", sort: "string"},
+						{id: "ContactID", header: ["Contact", {content: "selectFilter"}], template: "#ContactID#", options: contacts, sort: "string"},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>"}
 					]
@@ -48,6 +49,9 @@ export default class ActivitiesView extends JetView {
 	init() {
 		console.log(activities, activityTypes);
 		this.$$("activities").sync(activities);
-		// this.$$("activities").sync(activityTypes);
+
+		Object.keys(activities).forEach((i) => {
+			console.log(i);
+		});
 	}
 }
