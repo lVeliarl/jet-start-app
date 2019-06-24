@@ -27,12 +27,22 @@ export default class ContactsView extends JetView {
 					cols: [
 						{
 							template: "#FirstName# #LastName# <br> #Email# #Skype# <br> #Job# #Company# <br> #Birthday# #Address#",
-							localId: "contactsInfo"
-						}
+							localId: "contactsInfo",
+							borderless: true
+						},
+						{rows: [
+							{cols: [
+								{view: "button", label: "Delete", css: "webix_primary", type: "icon", icon: "mdi mdi-trash-can"},
+								{view: "button", label: "Edit", css: "webix_primary", type: "icon", icon: "mdi mdi-file-document-edit"}
+							],
+							width: 200},
+							{}
+						]}
 					]
 				}
 				// info
-			]
+			],
+			type: "section"
 		};
 	}
 
