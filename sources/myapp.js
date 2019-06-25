@@ -8,7 +8,7 @@ export default class MyApp extends JetApp {
 			version: VERSION,
 			router: BUILD_AS_MODULE ? EmptyRouter : HashRouter,
 			debug: true,
-			start: "/top/contacts"
+			start: "/top/Contacts"
 		};
 
 		super({...defaults, ...config});

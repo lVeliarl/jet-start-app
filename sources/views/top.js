@@ -3,7 +3,10 @@ import {JetView, plugins} from "webix-jet";
 export default class TopView extends JetView {
 	config() {
 		let header = {
-			type: "header", template: this.app.config.name, css: "webix_header app_header"
+			type: "header",
+			localId: "header",
+			template: this.app.config.name,
+			css: "webix_header app_header"
 		};
 
 		let menu = {
@@ -15,9 +18,9 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			data: [
-				{value: "Contacts", id: "contacts", icon: "mdi mdi-account-group"},
-				{value: "Activities", id: "activities", icon: "mdi mdi-calendar-month"},
-				{value: "Settings", id: "settings", icon: "mdi mdi-cogs"}
+				{value: "Contacts", id: "Contacts", icon: "mdi mdi-account-group"},
+				{value: "Activities", id: "Activities", icon: "mdi mdi-calendar-month"},
+				{value: "Settings", id: "Settings", icon: "mdi mdi-cogs"}
 			]
 		};
 
@@ -50,6 +53,6 @@ export default class TopView extends JetView {
 
 	init() {
 		this.use(plugins.Menu, "top:menu");
-		console.log(this.getUrlString());
+		console.log(this.getUrl()[1].page);
 	}
 }
