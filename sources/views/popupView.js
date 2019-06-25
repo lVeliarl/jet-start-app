@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {activities} from "../models/activities";
 import {activityTypes} from "../models/activityTypes";
 import {contacts} from "../models/contacts";
 
@@ -6,37 +7,47 @@ export default class PopupView extends JetView {
 	config() {
 		const popupForm = {
 			view: "form",
-			id: "popup_form",
+			localId: "popup_form",
 			elements: [
 				{
 					view: "text",
 					label: "Details",
 					height: 100,
+					name: "Details",
 					resize: true
 				},
 				{
 					view: "richselect",
 					label: "Type",
+					name: "TypeID",
 					options: activityTypes
 				},
 				{
 					view: "richselect",
 					label: "Contact",
+					name: "ContactID",
 					options: contacts
 				},
 				{cols: [
-					{view: "datepicker", label: "Date", value: new Date()},
-					{view: "datepicker", type: "time", label: "Time", value: new Date()}
+					{view: "datepicker", label: "Date", name: "DueDate", value: new Date()},
+					{view: "datepicker", type: "time", label: "Time", name: "Time", value: new Date()}
 				]},
-				{view: "checkbox", labelRight: "Selected", labelWidth: 0},
+				{view: "checkbox", labelRight: "Selected", labelWidth: 0, name: "State"},
 				{cols: [
 					{gravity: 4},
-					{view: "button", value: "Add/delete", css: "webix_primary"},
+					{
+						view: "button",
+						value: "Add/delete",
+						css: "webix_primary",
+						click: () => {
+							activities.add(this.$$("popup_form").getValues());
+						}
+					},
 					{
 						view: "button",
 						value: "Cancel",
 						click: () => {
-							console.log(this);
+							// this.ui(PopupView).close();
 						}
 					}
 				]}
@@ -54,7 +65,6 @@ export default class PopupView extends JetView {
 			close: true,
 			modal: true,
 			body: popupForm
-
 		};
 	}
 
