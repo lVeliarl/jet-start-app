@@ -8,6 +8,10 @@ export default class PopupView extends JetView {
 		const popupForm = {
 			view: "form",
 			localId: "popup_form",
+			rules: {
+				TypeID: webix.rules.isNotEmpty,
+				ContactID: webix.rules.isNotEmpty
+			},
 			elements: [
 				{
 					view: "text",
@@ -20,13 +24,16 @@ export default class PopupView extends JetView {
 					view: "richselect",
 					label: "Type",
 					name: "TypeID",
-					options: activityTypes
+					options: activityTypes,
+					invalidMessage: "Please select an option"
 				},
 				{
 					view: "richselect",
 					label: "Contact",
 					name: "ContactID",
-					options: contacts
+					options: contacts,
+					invalidMessage: "Please select an option"
+
 				},
 				{cols: [
 					{view: "datepicker", label: "Date", name: "DueDate"},
@@ -37,15 +44,18 @@ export default class PopupView extends JetView {
 					{gravity: 4},
 					{
 						view: "button",
-						value: "Save",
+						value: "Add/save",
+						id: "saveChanges",
 						css: "webix_primary",
 						click: () => {
-							let formValues = this.$$("popup_form").getValues();
-							let id = formValues.id;
-							if (activities.exists(id)) {
-								activities.updateItem(id, formValues);
+							if (this.$$("popup_form").validate()) {
+								let formValues = this.$$("popup_form").getValues();
+								let id = formValues.id;
+								if (activities.exists(id)) {
+									activities.updateItem(id, formValues);
+								}
+								else { activities.add(formValues); }
 							}
-							else { activities.add(formValues); }
 						}
 					},
 					{
@@ -67,7 +77,7 @@ export default class PopupView extends JetView {
 				template: "Edit/add", localId: "windowHeader"
 			},
 			width: 600,
-			height: 400,
+			height: 500,
 			position: "center",
 			modal: true,
 			body: popupForm
@@ -79,11 +89,13 @@ export default class PopupView extends JetView {
 
 		if (item && mode === "Edit") {
 			this.$$("popup_form").setValues(item);
+			this.$$("saveChanges").setValue("Save");
 			this.$$("windowHeader").setHTML(`${mode} activity`);
 		}
 
 		if (mode === "Add") {
 			this.$$("popup_form").setValues({DueDate: new Date(), Time: new Date()});
+			this.$$("saveChanges").setValue("Add");
 			this.$$("windowHeader").setHTML(`${mode} activity`);
 		}
 	}

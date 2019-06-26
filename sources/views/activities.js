@@ -43,11 +43,11 @@ export default class ActivitiesView extends JetView {
 					localId: "activities",
 					select: true,
 					columns: [
-						{id: "checkActivity", header: "", template: "{common.checkbox()}", checkValue: "Completed", uncheckValue: "Uncompleted", width: 50},
+						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Completed", uncheckValue: "Uncompleted", width: 50},
 						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
 						{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], template: "#DueDate#", sort: "string", width: 150},
 						{id: "Details", header: ["Details", {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-						{id: "ContactID", header: ["Contact", {content: "selectFilter"}], options: contacts, sort: "string"},
+						{id: "ContactID", header: ["Contact", {content: "selectFilter"}], options: contacts, sort: "string", fillspace: true},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
 					],
@@ -62,9 +62,6 @@ export default class ActivitiesView extends JetView {
 						},
 						edit_entry: (e, id) => {
 							let item = activities.getItem(id);
-							// this.app.callEvent("formData", [item]);
-							// console.log(this.ui(PopupView).getRoot().getChildViews()[1]);
-							// this.ui(PopupView).getRoot().getChildViews()[1].setValues(item);
 							this.ui(PopupView).showWindow(item, "Edit");
 						}
 					},
