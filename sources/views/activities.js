@@ -43,7 +43,7 @@ export default class ActivitiesView extends JetView {
 					localId: "activities",
 					select: true,
 					columns: [
-						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Completed", uncheckValue: "Uncompleted", width: 50},
+						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
 						{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], template: "#DueDate#", sort: "string", width: 150},
 						{id: "Details", header: ["Details", {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
@@ -77,6 +77,7 @@ export default class ActivitiesView extends JetView {
 	}
 
 	init() {
+		console.log(activities.data.pull);
 		this.$$("activities").sync(activities);
 	}
 

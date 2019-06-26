@@ -39,7 +39,7 @@ export default class PopupView extends JetView {
 					{view: "datepicker", label: "Date", name: "DueDate"},
 					{view: "datepicker", type: "time", label: "Time", name: "Time"}
 				]},
-				{view: "checkbox", labelRight: "Selected", labelWidth: 0, name: "State"},
+				{view: "checkbox", name: "State", labelRight: "Selected", labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
 				{cols: [
 					{gravity: 4},
 					{
@@ -50,6 +50,7 @@ export default class PopupView extends JetView {
 						click: () => {
 							if (this.$$("popup_form").validate()) {
 								let formValues = this.$$("popup_form").getValues();
+								console.log(formValues);
 								let id = formValues.id;
 								if (activities.exists(id)) {
 									activities.updateItem(id, formValues);
