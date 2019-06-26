@@ -22,6 +22,7 @@ if (!BUILD_AS_MODULE) {
 
 		app.attachEvent("app:error:resolve", (err, url) => {
 			webix.delay(() => app.show("/top/contacts"));
+			// eslint-disable-next-line no-console
 			console.log(err, url);
 		});
 	});
