@@ -68,6 +68,14 @@ export default class PopupView extends JetView {
 		};
 	}
 
+	init() {
+		this.on(this.app, "onAfterSelect", (data) => {
+			if (data) {
+				console.log(data);
+			}
+		});
+	}
+
 	showWindow() {
 		this.getRoot().show();
 	}

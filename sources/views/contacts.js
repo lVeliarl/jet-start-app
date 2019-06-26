@@ -3,6 +3,31 @@ import {contacts} from "../models/contacts";
 
 export default class ContactsView extends JetView {
 	config() {
+		const htmlContactsInfo =
+		`<div class='wrapper'>
+			<div class='row row1'>
+				<div class='column column1'>
+					<h2 class='contacts_name'>#FirstName# #LastName# </h2>
+				</div>
+			</div>
+			<div class='row row2'>
+				<div class='column column1'>
+					<span class='photo'></span>
+					<h4 class='label'>Status</h4>
+				</div>
+				<div class='column column2'>
+					<span class='mdi mdi-email'>#Email#</span>
+					<span class='mdi mdi-skype'>#Skype#</span>
+					<span class='mdi mdi-tag'>#Job#</span>
+					<span class='mdi mdi-briefcase'>#Company#</span>
+				</div>
+				<div class='column column3'>
+					<span class='mdi mdi-calendar-month'>#Birthday#</span>
+					<span class='mdi mdi-map-marker'>#Address#</span>
+				</div>
+			</div>
+		</div>`;
+
 		const contactsList = {
 			view: "list",
 			localId: "contacts",
@@ -26,7 +51,7 @@ export default class ContactsView extends JetView {
 				{
 					cols: [
 						{
-							template: "#FirstName# #LastName# <br> #Email# #Skype# <br> #Job# #Company# <br> #Birthday# #Address#",
+							template: htmlContactsInfo,
 							localId: "contactsInfo",
 							borderless: true
 						},
@@ -40,7 +65,6 @@ export default class ContactsView extends JetView {
 						]}
 					]
 				}
-				// info
 			],
 			type: "section"
 		};

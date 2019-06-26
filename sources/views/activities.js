@@ -43,8 +43,8 @@ export default class ActivitiesView extends JetView {
 					localId: "activities",
 					select: true,
 					columns: [
-						{id: "checkActivity", header: "", template: "{common.checkbox()}", checkValue: "Open", uncheckValue: "Close", width: 50},
-						{id: "TypeID", header: ["Activity type", {content: "selectFilter"}], options: activityTypes, sort: "string"},
+						{id: "checkActivity", header: "", template: "{common.checkbox()}", checkValue: "Completed", uncheckValue: "Uncompleted", width: 50},
+						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
 						{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], template: "#DueDate#", sort: "string"},
 						{id: "Details", header: ["Details", {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
 						{id: "ContactID", header: ["Contact", {content: "selectFilter"}], options: contacts, sort: "string"},
@@ -60,14 +60,14 @@ export default class ActivitiesView extends JetView {
 								activities.remove(id);
 							});
 						},
-						edit_entry: (e, id) => {
-							this.$$("activities").getItem(id);
+						edit_entry: () => {
 							this.ui(PopupView).showWindow();
 						}
 					},
 					on: {
 						onAfterSelect: (obj) => {
 							this.setParam("id", obj.id, true);
+							this.app.callEvent("onAfterSelect", [obj]);
 						}
 					}
 				}
@@ -81,11 +81,8 @@ export default class ActivitiesView extends JetView {
 	}
 
 	urlChange() {
-		let id = this.getParam("id", true);
-		console.log(activities);
 		// if (id) {
 		// 	this.$$("activities").select(id);
 		// }
-		console.log(id);
 	}
 }

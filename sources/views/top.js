@@ -56,6 +56,6 @@ export default class TopView extends JetView {
 	}
 
 	urlChange() {
-		console.log(this.getUrl()[1].page, this.$$("header"));
+		this.$$("header").setHTML(this.getUrl()[1].page);
 	}
 }

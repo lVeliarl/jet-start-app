@@ -56,3 +56,44 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+  
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+}
+
+.wrapper .contacts_name {
+    margin: 15px 0 15px 5%;
+}
+
+.row2 .column1 {
+    align-items: center;
+}
+
+.wrapper .photo {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black
+}
+
+.wrapper .label {
+    text-align: center;
+}
+
+.wrapper .mdi {
+    margin: 10px;
+    font-size: 16px;
+}
+
+.wrapper .mdi::before {
+    margin: 0 5px 0 0;
+}
