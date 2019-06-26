@@ -32,14 +32,10 @@ export default class TopView extends JetView {
 				header,
 				{cols: [
 					{
-						paddingX: 5,
-						paddingY: 10,
 						rows: [menu]
 					},
 					{
 						type: "wide",
-						paddingY: 10,
-						paddingX: 5,
 						rows: [
 							{$subview: true}
 						]

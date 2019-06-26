@@ -3,8 +3,20 @@ import {contacts} from "../models/contacts";
 
 export default class ContactsView extends JetView {
 	config() {
+		const htmlContactsCard =
+		`<div class='wrapper card'>
+			<div class='row'>
+				<div class='column'>
+					<img src='http://diazworld.com/images/avatar-placeholder.png' width='50' height='50'>
+				</div>
+				<div class='column'>
+				#FirstName# #LastName# <br> #Company#
+				</div>
+			</div>
+		</div>`;
+
 		const htmlContactsInfo =
-		`<div class='wrapper'>
+		`<div class='wrapper info'>
 			<div class='row row1'>
 				<div class='column column1'>
 					<h2 class='contacts_name'>#FirstName# #LastName# </h2>
@@ -31,12 +43,13 @@ export default class ContactsView extends JetView {
 		const contactsList = {
 			view: "list",
 			localId: "contacts",
-			width: 200,
+			width: 220,
 			select: true,
 			scroll: "auto",
-			template: "#FirstName# #LastName# <br> #Company#",
+			template: htmlContactsCard,
 			type: {
-				height: 60
+				width: "auto",
+				height: "auto"
 			},
 			on: {
 				onAfterSelect: (id) => {

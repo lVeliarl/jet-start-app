@@ -10,7 +10,8 @@ export default class PopupView extends JetView {
 			localId: "popup_form",
 			rules: {
 				TypeID: webix.rules.isNotEmpty,
-				ContactID: webix.rules.isNotEmpty
+				ContactID: webix.rules.isNotEmpty,
+				Details: webix.rules.isNotEmpty
 			},
 			elements: [
 				{
@@ -36,8 +37,8 @@ export default class PopupView extends JetView {
 
 				},
 				{cols: [
-					{view: "datepicker", label: "Date", name: "DueDate"},
-					{view: "datepicker", type: "time", label: "Time", name: "Time"}
+					{view: "datepicker", label: "Date", name: "convertedDate"},
+					{view: "datepicker", type: "time", label: "Time", name: "convertedTime"}
 				]},
 				{view: "checkbox", name: "State", labelRight: "Selected", labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
 				{cols: [
@@ -55,6 +56,8 @@ export default class PopupView extends JetView {
 									activities.updateItem(id, formValues);
 								}
 								else { activities.add(formValues); }
+								webix.message("Entry successfully saved");
+								this.closeWindow();
 							}
 						}
 					},
@@ -85,18 +88,22 @@ export default class PopupView extends JetView {
 	}
 
 	showWindow(item, mode) {
+		let form = this.$$("popup_form");
+		let editButton = this.$$("saveChanges");
+		let windowHeader = this.$$("windowHeader");
+
 		this.getRoot().show();
 
 		if (item && mode === "Edit") {
-			this.$$("popup_form").setValues(item);
-			this.$$("saveChanges").setValue("Save");
-			this.$$("windowHeader").setHTML(`${mode} activity`);
+			form.setValues(item);
+			editButton.setValue("Save");
+			windowHeader.setHTML(`${mode} activity`);
 		}
 
 		if (mode === "Add") {
-			this.$$("popup_form").setValues({DueDate: new Date(), Time: new Date()});
-			this.$$("saveChanges").setValue("Add");
-			this.$$("windowHeader").setHTML(`${mode} activity`);
+			form.setValues({convertedDate: new Date(), convertedTime: new Date()});
+			editButton.setValue("Add");
+			windowHeader.setHTML(`${mode} activity`);
 		}
 	}
 

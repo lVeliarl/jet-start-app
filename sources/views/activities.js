@@ -45,9 +45,9 @@ export default class ActivitiesView extends JetView {
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "DueDate", header: ["Due date", {content: "datepickerFilter"}], template: "#DueDate#", sort: "string", width: 150},
-						{id: "Details", header: ["Details", {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-						{id: "ContactID", header: ["Contact", {content: "selectFilter"}], options: contacts, sort: "string", fillspace: true},
+						{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+						{id: "ContactID", header: ["Contact", {content: "richSelectFilter"}], options: contacts, sort: "string", fillspace: true},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
 					],
@@ -78,11 +78,5 @@ export default class ActivitiesView extends JetView {
 
 	init() {
 		this.$$("activities").sync(activities);
-	}
-
-	urlChange() {
-		// if (id) {
-		// 	this.$$("activities").select(id);
-		// }
 	}
 }

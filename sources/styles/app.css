@@ -44,8 +44,13 @@
     }
 }
 .app_header.webix_header{
-	text-align:center;
+    text-align:center;
 }
+
+.app_header.webix_header .webix_template {
+    border-bottom: 1px solid black;
+}
+
 .app_layout.webix_layout_clean{
 	background: #EBEDF0;
 }
@@ -69,6 +74,10 @@
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
+}
+
+.wrapper.card .row {
+    align-items: center;
 }
 
 .wrapper .contacts_name {
