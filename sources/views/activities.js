@@ -34,7 +34,7 @@ export default class ActivitiesView extends JetView {
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
 						click: (item) => {
-							this.ui(PopupView).showWindow(item, "add");
+							this.ui(PopupView).showWindow(item, "Add");
 						}
 					}
 				]},
@@ -65,7 +65,7 @@ export default class ActivitiesView extends JetView {
 							// this.app.callEvent("formData", [item]);
 							// console.log(this.ui(PopupView).getRoot().getChildViews()[1]);
 							// this.ui(PopupView).getRoot().getChildViews()[1].setValues(item);
-							this.ui(PopupView).showWindow(item, "edit");
+							this.ui(PopupView).showWindow(item, "Edit");
 						}
 					},
 					on: {

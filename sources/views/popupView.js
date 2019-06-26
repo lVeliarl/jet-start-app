@@ -37,19 +37,22 @@ export default class PopupView extends JetView {
 					{gravity: 4},
 					{
 						view: "button",
-						value: "Add/save",
+						value: "Save",
 						css: "webix_primary",
-						click: (id) => {
-							console.log(this.$$("popup_form"));
-							activities.add(this.$$("popup_form").getValues());
+						click: () => {
+							let formValues = this.$$("popup_form").getValues();
+							let id = formValues.id;
+							if (activities.exists(id)) {
+								activities.updateItem(id, formValues);
+							}
+							else { activities.add(formValues); }
 						}
 					},
 					{
 						view: "button",
 						value: "Cancel",
 						click: () => {
-							this.ui(PopupView).closeWindow();
-							// this.ui(PopupView).close();
+							this.closeWindow();
 						}
 					}
 				]}
@@ -58,13 +61,14 @@ export default class PopupView extends JetView {
 
 		return {
 			view: "window",
-			localid: "popup",
+			localId: "popup",
 			move: true,
-			head: "Edit/Add activity",
+			head: {
+				template: "Edit/add", localId: "windowHeader"
+			},
 			width: 600,
 			height: 400,
 			position: "center",
-			close: true,
 			modal: true,
 			body: popupForm
 		};
@@ -72,13 +76,15 @@ export default class PopupView extends JetView {
 
 	showWindow(item, mode) {
 		this.getRoot().show();
-		console.log(this.getRoot().config.head.cols[0]);
-		if (item && mode === "edit") {
+
+		if (item && mode === "Edit") {
 			this.$$("popup_form").setValues(item);
+			this.$$("windowHeader").setHTML(`${mode} activity`);
 		}
 
-		if (mode === "add") {
+		if (mode === "Add") {
 			this.$$("popup_form").setValues({DueDate: new Date(), Time: new Date()});
+			this.$$("windowHeader").setHTML(`${mode} activity`);
 		}
 	}
 

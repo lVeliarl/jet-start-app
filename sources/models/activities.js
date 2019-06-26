@@ -11,8 +11,5 @@ export const activities = new webix.DataCollection({
 				obj.DueDate = `${day} ${month} ${year}`;
 			}
 		}
-		// $save: (obj) => {
-
-		// }
 	}
 });
