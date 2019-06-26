@@ -18,9 +18,9 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			data: [
-				{value: "Contacts", id: "Contacts", icon: "mdi mdi-account-group"},
-				{value: "Activities", id: "Activities", icon: "mdi mdi-calendar-month"},
-				{value: "Settings", id: "Settings", icon: "mdi mdi-cogs"}
+				{value: "Contacts", id: "contacts", icon: "mdi mdi-account-group"},
+				{value: "Activities", id: "activities", icon: "mdi mdi-calendar-month"},
+				{value: "Settings", id: "settings", icon: "mdi mdi-cogs"}
 			]
 		};
 
@@ -56,6 +56,7 @@ export default class TopView extends JetView {
 	}
 
 	urlChange() {
-		this.$$("header").setHTML(this.getUrl()[1].page);
+		let currentPage = this.getUrl()[1].page;
+		this.$$("header").setHTML(currentPage.charAt(0).toUpperCase() + currentPage.slice(1));
 	}
 }

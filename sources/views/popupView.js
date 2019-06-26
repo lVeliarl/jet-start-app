@@ -37,7 +37,7 @@ export default class PopupView extends JetView {
 					{gravity: 4},
 					{
 						view: "button",
-						value: "Add/delete",
+						value: "Add/save",
 						css: "webix_primary",
 						click: () => {
 							activities.add(this.$$("popup_form").getValues());
@@ -47,6 +47,8 @@ export default class PopupView extends JetView {
 						view: "button",
 						value: "Cancel",
 						click: () => {
+							console.log(this.ui(PopupView).closeWindow());
+							this.ui(PopupView).closeWindow();
 							// this.ui(PopupView).close();
 						}
 					}
@@ -69,15 +71,18 @@ export default class PopupView extends JetView {
 	}
 
 	init() {
-		this.on(this.app, "onAfterSelect", (data) => {
-			if (data) {
-				console.log(data);
-			}
+		this.on(this.app, "formData", (item) => {
+			console.log(item);
+			this.$$("popup_form").setValues(item);
 		});
 	}
 
 	showWindow() {
 		this.getRoot().show();
+	}
+
+	closeWindow() {
+		this.getRoot().close();
 	}
 }
 
