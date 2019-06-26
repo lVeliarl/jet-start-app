@@ -20,10 +20,8 @@ if (!BUILD_AS_MODULE) {
 		const app = new MyApp();
 		app.render();
 
-		app.attachEvent("app:error:resolve", (err, url) => {
+		app.attachEvent("app:error:resolve", () => {
 			webix.delay(() => app.show("/top/contacts"));
-			// eslint-disable-next-line no-console
-			console.log(err, url);
 		});
 	});
 }
