@@ -77,7 +77,6 @@ export default class ActivitiesView extends JetView {
 	}
 
 	init() {
-		console.log(activities.data.pull);
 		this.$$("activities").sync(activities);
 	}
 

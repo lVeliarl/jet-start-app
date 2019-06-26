@@ -50,7 +50,6 @@ export default class PopupView extends JetView {
 						click: () => {
 							if (this.$$("popup_form").validate()) {
 								let formValues = this.$$("popup_form").getValues();
-								console.log(formValues);
 								let id = formValues.id;
 								if (activities.exists(id)) {
 									activities.updateItem(id, formValues);
