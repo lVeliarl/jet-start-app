@@ -33,8 +33,8 @@ export default class ActivitiesView extends JetView {
 						type: "icon",
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
-						click: () => {
-							this.ui(PopupView).showWindow();
+						click: (item) => {
+							this.ui(PopupView).showWindow(item, "add");
 						}
 					}
 				]},
@@ -62,10 +62,10 @@ export default class ActivitiesView extends JetView {
 						},
 						edit_entry: (e, id) => {
 							let item = activities.getItem(id);
-							this.app.callEvent("formData", [item]);
+							// this.app.callEvent("formData", [item]);
 							// console.log(this.ui(PopupView).getRoot().getChildViews()[1]);
 							// this.ui(PopupView).getRoot().getChildViews()[1].setValues(item);
-							this.ui(PopupView).showWindow();
+							this.ui(PopupView).showWindow(item, "edit");
 						}
 					},
 					on: {

@@ -29,8 +29,8 @@ export default class PopupView extends JetView {
 					options: contacts
 				},
 				{cols: [
-					{view: "datepicker", label: "Date", name: "DueDate", value: new Date()},
-					{view: "datepicker", type: "time", label: "Time", name: "Time", value: new Date()}
+					{view: "datepicker", label: "Date", name: "DueDate"},
+					{view: "datepicker", type: "time", label: "Time", name: "Time"}
 				]},
 				{view: "checkbox", labelRight: "Selected", labelWidth: 0, name: "State"},
 				{cols: [
@@ -39,7 +39,8 @@ export default class PopupView extends JetView {
 						view: "button",
 						value: "Add/save",
 						css: "webix_primary",
-						click: () => {
+						click: (id) => {
+							console.log(this.$$("popup_form"));
 							activities.add(this.$$("popup_form").getValues());
 						}
 					},
@@ -47,7 +48,6 @@ export default class PopupView extends JetView {
 						view: "button",
 						value: "Cancel",
 						click: () => {
-							console.log(this.ui(PopupView).closeWindow());
 							this.ui(PopupView).closeWindow();
 							// this.ui(PopupView).close();
 						}
@@ -70,15 +70,16 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	init() {
-		this.on(this.app, "formData", (item) => {
-			console.log(item);
-			this.$$("popup_form").setValues(item);
-		});
-	}
-
-	showWindow() {
+	showWindow(item, mode) {
 		this.getRoot().show();
+		console.log(this.getRoot().config.head.cols[0]);
+		if (item && mode === "edit") {
+			this.$$("popup_form").setValues(item);
+		}
+
+		if (mode === "add") {
+			this.$$("popup_form").setValues({DueDate: new Date(), Time: new Date()});
+		}
 	}
 
 	closeWindow() {
