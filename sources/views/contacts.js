@@ -64,6 +64,98 @@ export default class ContactsView extends JetView {
 			}
 		};
 
+		const activitiesTable = {
+			rows: [
+				{
+					view: "datatable",
+					localId: "activities",
+					scroll: "auto",
+					select: true,
+					columns: [
+						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
+						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
+						{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
+						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
+					],
+					onClick: {
+						delete_entry: (e, id) => {
+							webix.confirm({
+								title: "Delete this entry",
+								text: "Are you sure you want to delete this entry?"
+							}).then(() => {
+								activities.remove(id);
+							});
+						},
+						edit_entry: (e, id) => {
+							let item = activities.getItem(id);
+							this.ui(PopupView).showWindow(item, "Edit");
+						}
+					}
+				},
+				{cols: [
+					{gravity: 3},
+					{
+						view: "button",
+						type: "icon",
+						icon: "mdi mdi-plus-box",
+						label: "Add activity",
+						css: "webix_primary"
+					}
+				]}
+			],
+			id: "activitiesSwitch"
+		};
+
+		const filesTable = {
+			rows: [
+				{
+					view: "datatable",
+					localId: "files",
+					scroll: "auto",
+					select: true,
+					columns: [
+						{id: "fileName", header: "Name", template: "", fillspace: true, sort: "string"},
+						{id: "changeDate", header: "Change date", template: "", width: 150, sort: "date"},
+						{id: "fileSize", header: "Size", template: "", sort: "string"},
+						{id: "deleteFile", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_file"}
+					],
+					onClick: {
+						delete_file: () => {
+							webix.confirm({
+								title: "Delete this file",
+								text: "Are you sure you want to delete this file?"
+							}).then(() => {
+								// fileStorage.remove(id);
+							});
+						}
+					}
+				},
+				{
+					cols: [
+						{},
+						{
+							view: "uploader",
+							localId: "uploadFiles",
+							type: "icon",
+							icon: "mdi mdi-cloud-upload",
+							label: "Upload file",
+							css: "webix_primary",
+							link: "files",
+							upload: "../models/fileStorage",
+							on: {
+								onItemClick: () => {
+									console.log(this.$$("uploadFiles").data.pull);
+								}
+							}
+						},
+						{}
+					]}
+			],
+			id: "filesSwitch"
+		};
+
 		return {
 			cols: [
 				{
@@ -128,48 +220,13 @@ export default class ContactsView extends JetView {
 							view: "segmented",
 							multiview: true,
 							options: [
-								{id: 1, value: "Activities"},
-								{id: 2, value: "Files"}
+								{id: "activitiesSwitch", value: "Activities"},
+								{id: "filesSwitch", value: "Files"}
 							]
 						},
 						{
-							view: "datatable",
-							localId: "activities",
-							scroll: "auto",
-							select: true,
-							columns: [
-								{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
-								{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-								{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
-								{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-								{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
-								{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
-							],
-							onClick: {
-								delete_entry: (e, id) => {
-									webix.confirm({
-										title: "Delete this entry",
-										text: "Are you sure you want to delete this entry?"
-									}).then(() => {
-										activities.remove(id);
-									});
-								},
-								edit_entry: (e, id) => {
-									let item = activities.getItem(id);
-									this.ui(PopupView).showWindow(item, "Edit");
-								}
-							}
-						},
-						{cols: [
-							{gravity: 3},
-							{
-								view: "button",
-								type: "icon",
-								icon: "mdi mdi-plus-box",
-								label: "Add activity",
-								css: "webix_primary"
-							}
-						]}
+							cells: [activitiesTable, filesTable]
+						}
 					]
 				}
 			],
@@ -186,8 +243,6 @@ export default class ContactsView extends JetView {
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 
-			console.log(contacts.data.pull, activities.data.pull);
-
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
 			}
@@ -199,3 +254,5 @@ export default class ContactsView extends JetView {
 }
 
 // multiview: contatcts info | edit / add contact form
+// multiview: activities / files
+// files: handle file saving
