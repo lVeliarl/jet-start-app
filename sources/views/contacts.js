@@ -1,5 +1,8 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
+import {activities} from "../models/activities";
+import {activityTypes} from "../models/activityTypes";
+import PopupView from "./popupView";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -47,6 +50,7 @@ export default class ContactsView extends JetView {
 			select: true,
 			scroll: "auto",
 			template: htmlContactsCard,
+			borderless: true,
 			type: {
 				width: "auto",
 				height: "auto"
@@ -54,27 +58,117 @@ export default class ContactsView extends JetView {
 			on: {
 				onAfterSelect: (id) => {
 					this.setParam("id", id, true);
+					console.log(activities);
+					this.$$("activities").parse(activities.getItem(id));
 				}
 			}
 		};
 
 		return {
 			cols: [
-				contactsList,
 				{
-					cols: [
+					rows: [
+						contactsList,
 						{
-							template: htmlContactsInfo,
-							localId: "contactsInfo",
-							borderless: true
+							view: "button",
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							label: "Add contact",
+							css: "webix_primary",
+							click: () => {
+								contacts.add({FirstName: "John", LastName: "Doe"});
+							}
+						}
+					]
+				},
+				{
+					rows: [
+						{
+							cols: [
+								{
+									template: htmlContactsInfo,
+									localId: "contactsInfo",
+									borderless: true
+								},
+								{rows: [
+									{cols: [
+										{
+											view: "button",
+											label: "Delete",
+											css: "webix_primary",
+											type: "icon",
+											icon: "mdi mdi-trash-can",
+											click: () => {
+												let id = this.getParam("id");
+												this.webix.confirm({
+													title: "Delete this contact",
+													text: "Do yo really want to remove this contatct?"
+												}).then(() => {
+													contacts.remove(id);
+												});
+											}
+										},
+										{
+											view: "button",
+											label: "Edit",
+											css: "webix_primary",
+											type: "icon",
+											icon: "mdi mdi-file-document-edit",
+											click: () => {
+												let id = this.getParam("id");
+											}
+										}
+									],
+									width: 200},
+									{}
+								]}
+							]
 						},
-						{rows: [
-							{cols: [
-								{view: "button", label: "Delete", css: "webix_primary", type: "icon", icon: "mdi mdi-trash-can"},
-								{view: "button", label: "Edit", css: "webix_primary", type: "icon", icon: "mdi mdi-file-document-edit"}
+						{
+							view: "segmented",
+							multiview: true,
+							options: [
+								{id: 1, value: "Activities"},
+								{id: 2, value: "Files"}
+							]
+						},
+						{
+							view: "datatable",
+							localId: "activities",
+							scroll: "auto",
+							select: true,
+							columns: [
+								{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
+								{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
+								{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+								{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+								{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
+								{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
 							],
-							width: 200},
-							{}
+							onClick: {
+								delete_entry: (e, id) => {
+									webix.confirm({
+										title: "Delete this entry",
+										text: "Are you sure you want to delete this entry?"
+									}).then(() => {
+										activities.remove(id);
+									});
+								},
+								edit_entry: (e, id) => {
+									let item = activities.getItem(id);
+									this.ui(PopupView).showWindow(item, "Edit");
+								}
+							}
+						},
+						{cols: [
+							{gravity: 3},
+							{
+								view: "button",
+								type: "icon",
+								icon: "mdi mdi-plus-box",
+								label: "Add activity",
+								css: "webix_primary"
+							}
 						]}
 					]
 				}
@@ -85,11 +179,14 @@ export default class ContactsView extends JetView {
 
 	init() {
 		let contactsList = this.$$("contacts");
+
 		contactsList.sync(contacts);
 		this.$$("contactsInfo").bind(contactsList);
 
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
+
+			console.log(contacts.data.pull, activities.data.pull);
 
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
@@ -100,3 +197,5 @@ export default class ContactsView extends JetView {
 		});
 	}
 }
+
+// multiview: contatcts info | edit / add contact form
