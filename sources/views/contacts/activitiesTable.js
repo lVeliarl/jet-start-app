@@ -48,4 +48,11 @@ export default class ActivitiesTable extends JetView {
 			]
 		};
 	}
+
+	urlChange() {
+		activities.waitData.then(() => {
+			let id = this.getParam("id");
+			this.$$("activities").parse(activities.getItem(id));
+		});
+	}
 }

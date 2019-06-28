@@ -1,6 +1,5 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
-import {activities} from "../models/activities";
 import ActivitiesTable from "./contacts/activitiesTable";
 import FilesTable from "./contacts/filesTable";
 
@@ -58,7 +57,6 @@ export default class ContactsView extends JetView {
 			on: {
 				onAfterSelect: (id) => {
 					this.setParam("id", id, true);
-					this.$$("activities").parse(activities.getItem(id));
 				}
 			}
 		};
