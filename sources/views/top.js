@@ -21,7 +21,12 @@ export default class TopView extends JetView {
 				{value: "Contacts", id: "contacts", icon: "mdi mdi-account-group"},
 				{value: "Activities", id: "activities", icon: "mdi mdi-calendar-month"},
 				{value: "Settings", id: "settings", icon: "mdi mdi-cogs"}
-			]
+			],
+			on: {
+				onAfterSelect: (id) => {
+					this.$$("header").setHTML(id.charAt(0).toUpperCase() + id.slice(1));
+				}
+			}
 		};
 
 		let ui = {
@@ -49,10 +54,5 @@ export default class TopView extends JetView {
 
 	init() {
 		this.use(plugins.Menu, "top:menu");
-	}
-
-	urlChange() {
-		let currentPage = this.getUrl()[1].page;
-		this.$$("header").setHTML(currentPage.charAt(0).toUpperCase() + currentPage.slice(1));
 	}
 }

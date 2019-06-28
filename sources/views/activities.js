@@ -34,7 +34,7 @@ export default class ActivitiesView extends JetView {
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
 						click: (item) => {
-							this.ui(PopupView).showWindow(item, "Add");
+							this.window.showWindow(item, "Add");
 						}
 					}
 				]},
@@ -45,11 +45,11 @@ export default class ActivitiesView extends JetView {
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "convertedDate", header: ["Due date", {content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
 						{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
 						{id: "ContactID", header: ["Contact", {content: "richSelectFilter"}], options: contacts, sort: "string", fillspace: true},
-						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
-						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
+						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit edit_entry'></span>"},
+						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
 					],
 					onClick: {
 						delete_entry: (e, id) => {
@@ -59,15 +59,12 @@ export default class ActivitiesView extends JetView {
 							}).then(() => {
 								activities.remove(id);
 							});
+							return false;
 						},
 						edit_entry: (e, id) => {
 							let item = activities.getItem(id);
-							this.ui(PopupView).showWindow(item, "Edit");
-						}
-					},
-					on: {
-						onAfterSelect: (obj) => {
-							this.setParam("id", obj.id, true);
+							this.window.showWindow(item, "Edit");
+							return false;
 						}
 					}
 				}
@@ -78,5 +75,6 @@ export default class ActivitiesView extends JetView {
 
 	init() {
 		this.$$("activities").sync(activities);
+		this.window = this.ui(PopupView);
 	}
 }

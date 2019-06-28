@@ -46,7 +46,7 @@ export default class PopupView extends JetView {
 					{
 						view: "button",
 						value: "Add/save",
-						id: "saveChanges",
+						localId: "saveChanges",
 						css: "webix_primary",
 						click: () => {
 							if (this.$$("popup_form").validate()) {
@@ -96,19 +96,19 @@ export default class PopupView extends JetView {
 
 		if (item && mode === "Edit") {
 			form.setValues(item);
-			editButton.setValue("Save");
-			windowHeader.setHTML(`${mode} activity`);
 		}
 
 		if (mode === "Add") {
 			form.setValues({convertedDate: new Date(), convertedTime: new Date()});
-			editButton.setValue("Add");
-			windowHeader.setHTML(`${mode} activity`);
 		}
+		editButton.setValue(`${mode}`);
+		windowHeader.setHTML(`${mode} activity`);
 	}
 
 	closeWindow() {
-		this.getRoot().close();
+		let form = this.$$("popup_form");
+		form.clearValidation();
+		this.getRoot().hide();
 	}
 }
 
