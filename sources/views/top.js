@@ -24,7 +24,8 @@ export default class TopView extends JetView {
 			],
 			on: {
 				onAfterSelect: (id) => {
-					this.$$("header").setHTML(id.charAt(0).toUpperCase() + id.slice(1));
+					let topMenu = this.$$("top:menu");
+					this.$$("header").setHTML(topMenu.getItem(id).value);
 				}
 			}
 		};

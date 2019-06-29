@@ -4,6 +4,8 @@ import {statuses} from "../models/statuses";
 
 export default class ContactsView extends JetView {
 	config() {
+		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+
 		const contactsList = {
 			view: "list",
 			localId: "contacts",
@@ -13,7 +15,7 @@ export default class ContactsView extends JetView {
 			template: obj => `<div class='wrapper card'>
 				<div class='row'>
 					<div class='column'>
-						<img src=${obj.Photo || obj.Placeholder} width='50' height='50'>
+						<img src=${obj.Photo || placeholder} width='50' height='50'>
 					</div>
 					<div class='column'>
 					${obj.FirstName || "-"} ${obj.LastName || "-"} <br> ${obj.Company || "-"}

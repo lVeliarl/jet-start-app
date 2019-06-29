@@ -18,7 +18,7 @@ export const activities = new webix.DataCollection({
 			let date = obj.convertedDate;
 			date.setHours(time.getHours());
 			date.setMinutes(time.getMinutes());
-			obj.DueDate = formatToStr(obj.convertedDate);
+			obj.DueDate = formatToStr(date);
 		}
 	}
 });

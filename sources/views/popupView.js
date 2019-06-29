@@ -107,6 +107,7 @@ export default class PopupView extends JetView {
 
 	closeWindow() {
 		let form = this.$$("popup_form");
+		form.clear();
 		form.clearValidation();
 		this.getRoot().hide();
 	}

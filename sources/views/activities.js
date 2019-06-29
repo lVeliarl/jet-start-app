@@ -33,8 +33,8 @@ export default class ActivitiesView extends JetView {
 						type: "icon",
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
-						click: (item) => {
-							this.window.showWindow(item, "Add");
+						click: () => {
+							this.window.showWindow(null, "Add");
 						}
 					}
 				]},
