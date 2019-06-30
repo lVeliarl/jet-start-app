@@ -30,6 +30,7 @@ export default class PopupView extends JetView {
 				},
 				{
 					view: "richselect",
+					localId: "contact",
 					label: "Contact",
 					name: "ContactID",
 					options: contacts,
@@ -87,12 +88,17 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	showWindow(item, mode) {
+	showWindow(item, mode, disabled) {
+		let id = this.getParam("id");
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
 
 		this.getRoot().show();
+
+		if (disabled) {
+			this.$$("contact").disable();
+		}
 
 		if (item && mode === "Edit") {
 			form.setValues(item);
@@ -101,7 +107,7 @@ export default class PopupView extends JetView {
 		}
 
 		if (mode === "Add") {
-			form.setValues({convertedDate: new Date(), convertedTime: new Date()});
+			form.setValues({ContactID: id, convertedDate: new Date(), convertedTime: new Date()});
 			editButton.setValue("Add");
 			windowHeader.setHTML(`${mode} activity`);
 		}

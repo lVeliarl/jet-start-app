@@ -2,7 +2,6 @@ import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
 import {activityTypes} from "../../models/activityTypes";
 import PopupView from "../popupView";
-import {contacts} from "../../models/contacts";
 
 export default class ActivitiesTable extends JetView {
 	config() {
@@ -15,9 +14,9 @@ export default class ActivitiesTable extends JetView {
 					select: true,
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
-						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "convertedTime", header: ["Due date", {content: "datepickerFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
-						{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+						{id: "TypeID", header: [{content: "richSelectFilter"}], options: activityTypes, sort: "string"},
+						{id: "convertedTime", header: [{content: "dateRangeFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "Details", header: [{content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
 					],
@@ -43,7 +42,10 @@ export default class ActivitiesTable extends JetView {
 						type: "icon",
 						icon: "mdi mdi-plus-box",
 						label: "Add activity",
-						css: "webix_primary"
+						css: "webix_primary",
+						click: () => {
+							this.ui(PopupView).showWindow(null, "Add", true);
+						}
 					}
 				]}
 			]
