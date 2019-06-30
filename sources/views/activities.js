@@ -77,6 +77,7 @@ export default class ActivitiesView extends JetView {
 	}
 
 	init() {
+		activities.filter();
 		this.$$("activities").sync(activities);
 	}
 }

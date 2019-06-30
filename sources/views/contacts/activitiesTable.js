@@ -2,6 +2,7 @@ import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
 import {activityTypes} from "../../models/activityTypes";
 import PopupView from "../popupView";
+import {contacts} from "../../models/contacts";
 
 export default class ActivitiesTable extends JetView {
 	config() {
@@ -52,7 +53,10 @@ export default class ActivitiesTable extends JetView {
 	urlChange() {
 		activities.waitData.then(() => {
 			let id = this.getParam("id");
-			this.$$("activities").parse(activities.getItem(id));
+
+			activities.filter(obj => obj.ContactID.toString() === id);
+
+			this.$$("activities").parse(activities);
 		});
 	}
 }
