@@ -94,13 +94,7 @@ export default class PopupView extends JetView {
 
 		this.getRoot().show();
 
-		if (item && mode === "Edit") {
-			form.setValues(item);
-		}
-
-		if (mode === "Add") {
-			form.setValues({convertedDate: new Date(), convertedTime: new Date()});
-		}
+		form.setValues(item || {convertedDate: new Date(), convertedTime: new Date()});
 		editButton.setValue(`${mode}`);
 		windowHeader.setHTML(`${mode} activity`);
 	}
