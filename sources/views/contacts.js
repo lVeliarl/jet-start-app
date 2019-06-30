@@ -2,6 +2,7 @@ import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
 import ActivitiesTable from "./contacts/activitiesTable";
 import FilesTable from "./contacts/filesTable";
+import {statuses} from "../models/statuses";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -74,6 +75,9 @@ export default class ContactsView extends JetView {
 							css: "webix_primary",
 							click: () => {
 								contacts.add({FirstName: "John", LastName: "Doe"});
+								this.$$("editContact").setValues({FirstName: "John", LastName: "Doe"});
+								this.showMenu("Add");
+								this.$$("contacts").select(contacts.getLastId());
 							}
 						}
 					]
@@ -112,7 +116,10 @@ export default class ContactsView extends JetView {
 											type: "icon",
 											icon: "mdi mdi-file-document-edit",
 											click: () => {
-												this.$$("test2").show();
+												let id = this.getParam("id");
+												let item = contacts.getItem(id);
+												this.$$("editContact").setValues(item);
+												this.showMenu("Edit");
 											}
 										}
 									],
@@ -137,7 +144,127 @@ export default class ContactsView extends JetView {
 						}
 					],
 					id: "test1"},
-					{id: "test2"}
+					{rows: [
+						{template: "Edit (add new) contact", localId: "formHeader", height: 100},
+						{cols: [
+							{
+								view: "form",
+								localId: "editContact",
+								cols: [
+									{rows: [
+										{
+											view: "text",
+											label: "First name",
+											name: "FirstName"
+										},
+										{
+											view: "text",
+											label: "Last name",
+											name: "LastName"
+										},
+										{
+											view: "datepicker",
+											label: "Joining date",
+											name: "StartDate"
+										},
+										{
+											view: "select",
+											label: "Status",
+											name: "StatusID",
+											options: statuses
+										},
+										{
+											view: "text",
+											label: "Job",
+											name: "Job"
+										},
+										{
+											view: "text",
+											label: "Company",
+											name: "Company"
+										},
+										{
+											view: "text",
+											label: "Website",
+											name: "Website"
+										},
+										{
+											view: "text",
+											label: "Address",
+											name: "Address"
+										},
+										{}
+									]},
+									{rows: [
+										{
+											view: "text",
+											label: "Email",
+											name: "Email"
+										},
+										{
+											view: "text",
+											label: "Skype",
+											name: "Skype"
+										},
+										{
+											view: "text",
+											label: "Phone",
+											name: "Phone"
+										},
+										{
+											view: "datepicker",
+											label: "Birthday",
+											name: "Birthday"
+										},
+										{}
+									]}
+
+								]
+							}
+						]},
+						{cols: [
+							{},
+							{
+								view: "button",
+								value: "Cancel",
+								click: () => {
+									let list = this.$$("contacts");
+									let form = this.$$("editContact");
+									let id = this.getParam("id");
+									let value = this.$$("saveContact").getValue();
+									if (value === "Add") {
+										contacts.remove(contacts.getLastId());
+										list.select(contacts.getFirstId());
+									}
+									if (value === "Save") {
+										list.select(id);
+									}
+									this.$$("test1").show(false, false);
+									form.clear();
+									form.clearValidation();
+								}
+							},
+							{
+								view: "button",
+								value: "Save(add)",
+								localId: "saveContact",
+								css: "webix_primary",
+								click: () => {
+									let id = this.getParam("id");
+									let value = this.$$("editContact").getValues();
+									let form = this.$$("editContact");
+									if (contacts.exists(id)) {
+										contacts.updateItem(id, value);
+									}
+									webix.message("Entry successfully saved");
+									this.$$("test1").show(false, false);
+									form.clear();
+									form.clearValidation();
+								}
+							}
+						]}
+					],
+					id: "test2"}
 				]
 				}
 			],
@@ -161,6 +288,21 @@ export default class ContactsView extends JetView {
 				contactsList.select(id);
 			}
 		});
+	}
+
+	showMenu(mode) {
+		let updateButton = this.$$("saveContact");
+		let formHeader = this.$$("formHeader");
+
+		if (mode === "Add") {
+			formHeader.setHTML(`${mode} new contact`);
+			updateButton.setValue(`${mode}`);
+		}
+		else if (mode === "Edit") {
+			formHeader.setHTML(`${mode} contact`);
+			updateButton.setValue("Save");
+		}
+		this.$$("test2").show(false, false);
 	}
 }
 
