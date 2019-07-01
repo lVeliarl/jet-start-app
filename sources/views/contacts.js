@@ -141,11 +141,12 @@ export default class ContactsView extends JetView {
 					],
 					id: "test1"},
 					{rows: [
-						{template: "Edit (add new) contact", localId: "formHeader", height: 100},
+						{template: "Edit (add new) contact", localId: "formHeader", height: 100, borderless: true},
 						{cols: [
 							{
 								view: "form",
 								localId: "editContact",
+								borderless: true,
 								cols: [
 									{rows: [
 										{
@@ -164,7 +165,7 @@ export default class ContactsView extends JetView {
 											name: "StartDate"
 										},
 										{
-											view: "select",
+											view: "richselect",
 											label: "Status",
 											name: "StatusID",
 											options: statuses
