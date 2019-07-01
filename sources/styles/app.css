@@ -1,0 +1,108 @@
+.webixappstart{
+    opacity:0;
+}
+.webixapp{
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+/*data loading status*/
+.status_good, .status_error, .status_saving{
+	text-align: center;
+	margin-left:-12px;
+}
+.status_error{
+	color:red;
+}
+.status_good{
+	color:green;
+}
+
+/*login form*/
+.invalid_login .webix_header > div{
+    background: #FC3636;
+    transition: background 1s;
+}
+.invalid_login{
+    -webkit-animation: formshake .5s linear;
+}
+@-webkit-keyframes formshake {
+    8%, 41% {
+        -webkit-transform: translateX(-10px);
+    }
+    25%, 58% {
+        -webkit-transform: translateX(10px);
+    }
+    75% {
+        -webkit-transform: translateX(-5px);
+    }
+    92% {
+        -webkit-transform: translateX(5px);
+    }
+    0%, 100% {
+        -webkit-transform: translateX(0);
+    }
+}
+.app_header.webix_header{
+    text-align:center;
+}
+
+.app_header.webix_header .webix_template {
+    border-bottom: 1px solid black;
+}
+
+.app_layout.webix_layout_clean{
+	background: #EBEDF0;
+}
+.app_start .webix_template{
+	padding:12px 12px;
+}
+.app_menu .webix_icon{
+	font-size:20px;
+	vertical-align:middle;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+  
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+}
+
+.wrapper.card .row {
+    align-items: center;
+}
+
+.wrapper .contacts_name {
+    margin: 15px 0 15px 5%;
+}
+
+.row2 .column1 {
+    align-items: center;
+}
+
+.wrapper .photo {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black
+}
+
+.wrapper .label {
+    text-align: center;
+}
+
+.wrapper .mdi {
+    margin: 10px;
+    font-size: 16px;
+}
+
+.wrapper .mdi::before {
+    margin: 0 5px 0 0;
+}
