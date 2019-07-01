@@ -48,10 +48,9 @@ export default class ContactsView extends JetView {
 							label: "Add contact",
 							css: "webix_primary",
 							click: () => {
-								contacts.add({FirstName: "John", LastName: "Doe"});
-								this.$$("editContact").setValues({FirstName: "John", LastName: "Doe"});
+								contacts.add({FirstName: "John", LastName: "Doe", StatusID: 1});
+								this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
 								this.showMenu("Add");
-								this.$$("contacts").select(contacts.getLastId());
 							}
 						}
 					]
@@ -62,28 +61,28 @@ export default class ContactsView extends JetView {
 							cols: [
 								{
 									template: obj => `<div class='wrapper info'>
-								<div class='row row1'>
-									<div class='column column1'>
-										<h2 class='contacts_name'>${obj.FirstName || "-"} ${obj.LastName || "-"} </h2>
-									</div>
-								</div>
-								<div class='row row2'>
-									<div class='column column1'>
-										<span class='photo'></span>
-										<h4 class='label'>${obj.Status || "-"}</h4>
-									</div>
-									<div class='column column2'>
-										<span class='mdi mdi-email'>${obj.Email || "-"}</span>
-										<span class='mdi mdi-skype'>${obj.Skype || "-"}</span>
-										<span class='mdi mdi-tag'>${obj.Job || "-"}</span>
-										<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
-									</div>
-									<div class='column column3'>
-										<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
-										<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
-									</div>
-								</div>
-							</div>`,
+										<div class='row row1'>
+											<div class='column column1'>
+												<h2 class='contacts_name'>${obj.FirstName || "-"} ${obj.LastName || "-"} </h2>
+											</div>
+										</div>
+										<div class='row row2'>
+											<div class='column column1'>
+												<span class='photo'></span>
+												<h4 class='label'>${obj.Status || "-"}</h4>
+											</div>
+											<div class='column column2'>
+												<span class='mdi mdi-email'>${obj.Email || "-"}</span>
+												<span class='mdi mdi-skype'>${obj.Skype || "-"}</span>
+												<span class='mdi mdi-tag'>${obj.Job || "-"}</span>
+												<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
+											</div>
+											<div class='column column3'>
+												<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
+												<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
+											</div>
+										</div>
+									</div>`,
 									localId: "contactsInfo",
 									borderless: true
 								},
@@ -102,6 +101,7 @@ export default class ContactsView extends JetView {
 													text: "Do yo really want to remove this contatct?"
 												}).then(() => {
 													contacts.remove(id);
+													this.$$("contacts").select(contacts.getLastId());
 												});
 											}
 										},
@@ -209,6 +209,7 @@ export default class ContactsView extends JetView {
 										},
 										{
 											view: "datepicker",
+											format: webix.i18n.longDateFormatStr,
 											label: "Birthday",
 											name: "Birthday"
 										},
@@ -276,6 +277,10 @@ export default class ContactsView extends JetView {
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 
+			this.$$("contacts").data.attachEvent("onIdChange", () => {
+				this.$$("contacts").select(contacts.getLastId());
+			});
+
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
 			}
@@ -290,11 +295,11 @@ export default class ContactsView extends JetView {
 		let formHeader = this.$$("formHeader");
 
 		if (mode === "Add") {
-			formHeader.setHTML(`${mode} new contact`);
+			formHeader.setHTML(`<h2>${mode} new contact</h2>`);
 			updateButton.setValue(`${mode}`);
 		}
 		else if (mode === "Edit") {
-			formHeader.setHTML(`${mode} contact`);
+			formHeader.setHTML(`<h2>${mode} contact</h2>`);
 			updateButton.setValue("Save");
 		}
 		this.$$("test2").show(false, false);
@@ -315,6 +320,4 @@ export default class ContactsView extends JetView {
 	}
 }
 
-// multiview: contatcts info | edit / add contact form
-// multiview: activities / files
 // files: handle file saving

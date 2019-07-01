@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {activities} from "../../models/activities";
 import {activityTypes} from "../../models/activityTypes";
+import {contacts} from "../../models/contacts";
 import PopupView from "../popupView";
 
 export default class ActivitiesTable extends JetView {
@@ -15,10 +16,10 @@ export default class ActivitiesTable extends JetView {
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: [{content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "convertedTime", header: [{content: "dateRangeFilter"}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "convertedTime", header: [{content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150},
 						{id: "Details", header: [{content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit'></span>", css: "edit_entry"},
-						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_entry"}
+						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit edit_entry'></span>"},
+						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
 					],
 					onClick: {
 						delete_entry: (e, id) => {
@@ -28,10 +29,12 @@ export default class ActivitiesTable extends JetView {
 							}).then(() => {
 								activities.remove(id);
 							});
+							return false;
 						},
 						edit_entry: (e, id) => {
 							let item = activities.getItem(id);
-							this.ui(PopupView).showWindow(item, "Edit");
+							this.window.showWindow(item, "Edit");
+							return false;
 						}
 					}
 				},
@@ -44,7 +47,7 @@ export default class ActivitiesTable extends JetView {
 						label: "Add activity",
 						css: "webix_primary",
 						click: () => {
-							this.ui(PopupView).showWindow(null, "Add", true);
+							this.window.showWindow(null, "Add", true);
 						}
 					}
 				]}
@@ -52,11 +55,18 @@ export default class ActivitiesTable extends JetView {
 		};
 	}
 
+	init() {
+		this.window = this.ui(PopupView);
+	}
+
 	urlChange() {
-		activities.waitData.then(() => {
+		webix.promise.all([
+			contacts.waitData,
+			activities.waitData
+		]).then(() => {
 			let id = this.getParam("id");
 
-			activities.filter(obj => obj.ContactID.toString() === id);
+			activities.filter(obj => obj.ContactID.toString() === id.toString());
 
 			this.$$("activities").parse(activities);
 		});
