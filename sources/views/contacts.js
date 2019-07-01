@@ -6,42 +6,7 @@ import {statuses} from "../models/statuses";
 
 export default class ContactsView extends JetView {
 	config() {
-		const htmlContactsCard =
-		`<div class='wrapper card'>
-			<div class='row'>
-				<div class='column'>
-					<img src='http://diazworld.com/images/avatar-placeholder.png' width='50' height='50'>
-				</div>
-				<div class='column'>
-				#FirstName# #LastName# <br> #Company#
-				</div>
-			</div>
-		</div>`;
-
-		const htmlContactsInfo =
-		`<div class='wrapper info'>
-			<div class='row row1'>
-				<div class='column column1'>
-					<h2 class='contacts_name'>#FirstName# #LastName# </h2>
-				</div>
-			</div>
-			<div class='row row2'>
-				<div class='column column1'>
-					<span class='photo'></span>
-					<h4 class='label'>Status</h4>
-				</div>
-				<div class='column column2'>
-					<span class='mdi mdi-email'>#Email#</span>
-					<span class='mdi mdi-skype'>#Skype#</span>
-					<span class='mdi mdi-tag'>#Job#</span>
-					<span class='mdi mdi-briefcase'>#Company#</span>
-				</div>
-				<div class='column column3'>
-					<span class='mdi mdi-calendar-month'>#Birthday#</span>
-					<span class='mdi mdi-map-marker'>#Address#</span>
-				</div>
-			</div>
-		</div>`;
+		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 		const contactsList = {
 			view: "list",
@@ -49,8 +14,17 @@ export default class ContactsView extends JetView {
 			width: 220,
 			select: true,
 			scroll: "auto",
-			template: htmlContactsCard,
 			borderless: true,
+			template: obj => `<div class='wrapper card'>
+				<div class='row'>
+					<div class='column'>
+						<img src=${obj.Photo || placeholder} width='50' height='50'>
+					</div>
+					<div class='column'>
+					${obj.FirstName || "-"} ${obj.LastName || "-"} <br> ${obj.Company || "-"}
+					</div>
+				</div>
+			</div>`,
 			type: {
 				width: "auto",
 				height: "auto"
@@ -87,7 +61,29 @@ export default class ContactsView extends JetView {
 						{
 							cols: [
 								{
-									template: htmlContactsInfo,
+									template: obj => `<div class='wrapper info'>
+								<div class='row row1'>
+									<div class='column column1'>
+										<h2 class='contacts_name'>${obj.FirstName || "-"} ${obj.LastName || "-"} </h2>
+									</div>
+								</div>
+								<div class='row row2'>
+									<div class='column column1'>
+										<span class='photo'></span>
+										<h4 class='label'>${obj.Status || "-"}</h4>
+									</div>
+									<div class='column column2'>
+										<span class='mdi mdi-email'>${obj.Email || "-"}</span>
+										<span class='mdi mdi-skype'>${obj.Skype || "-"}</span>
+										<span class='mdi mdi-tag'>${obj.Job || "-"}</span>
+										<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
+									</div>
+									<div class='column column3'>
+										<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
+										<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
+									</div>
+								</div>
+							</div>`,
 									localId: "contactsInfo",
 									borderless: true
 								},
@@ -276,7 +272,6 @@ export default class ContactsView extends JetView {
 		let contactsList = this.$$("contacts");
 
 		contactsList.sync(contacts);
-		this.$$("contactsInfo").bind(contactsList);
 
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
@@ -284,7 +279,7 @@ export default class ContactsView extends JetView {
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
 			}
-			else if (id && contacts.exists(id)) {
+			else if (id && id !== contactsList.getSelectedId()) {
 				contactsList.select(id);
 			}
 		});
@@ -303,6 +298,20 @@ export default class ContactsView extends JetView {
 			updateButton.setValue("Save");
 		}
 		this.$$("test2").show(false, false);
+	}
+
+	urlChange() {
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData
+		]).then(() => {
+			let id = this.getParam("id");
+			let selectedContact = webix.copy(contacts.getItem(id));
+			let selectedStatusID = statuses.getItem(selectedContact.StatusID);
+
+			selectedContact.Status = selectedStatusID.Value;
+			this.$$("contactsInfo").setValues(selectedContact);
+		});
 	}
 }
 

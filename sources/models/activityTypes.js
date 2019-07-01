@@ -4,7 +4,6 @@ export const activityTypes = new webix.DataCollection({
 	scheme: {
 		$init: (obj) => {
 			obj.value = obj.Value;
-			delete obj.Value;
 		}
 	}
 });
