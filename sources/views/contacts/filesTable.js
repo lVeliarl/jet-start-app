@@ -1,5 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
+import {fileStorage} from "../../models/fileStorage";
 
 export default class FilesTable extends JetView {
 	config() {
@@ -12,9 +13,14 @@ export default class FilesTable extends JetView {
 					select: true,
 					columns: [
 						{id: "name", header: "Name", template: "", fillspace: true, sort: "string"},
-						{id: "changeDate", header: "Change date", template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
-						{id: "sizetext", header: "Size", template: "", sort: "string"},
-						{id: "deleteFile", header: "", width: 50, template: "<span class='mdi mdi-trash-can'></span>", css: "delete_file"}
+						{id: "date", header: "Change date", template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
+						{
+							id: "size",
+							header: "Size",
+							template: obj => `${obj.size}Kb`,
+							sort: "int"
+						},
+						{id: "deleteFile", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_file'></span>"}
 					],
 					onClick: {
 						delete_file: (e, id) => {
@@ -38,8 +44,7 @@ export default class FilesTable extends JetView {
 							icon: "mdi mdi-cloud-upload",
 							label: "Upload file",
 							css: "webix_primary",
-							link: "files",
-							upload: "../../models/fileStorage"
+							upload: "./"
 						},
 						{}
 					]}
@@ -48,13 +53,18 @@ export default class FilesTable extends JetView {
 	}
 
 	init() {
+		this.$$("files").sync(fileStorage);
+
+		let id = this.getParam("id");
+
 		this.$$("uploadFiles").attachEvent("onBeforeFileAdd", (obj) => {
-			let id = this.getParam("id");
-			let item = contacts.getItem(id);
-			item.fileData = obj;
-			item.fileData.changeDate = obj.file.lastModifiedDate;
-			this.$$("files").add(item.fileData);
-			this.$$("uploadFiles").stopUpload();
+			let item = {
+				name: obj.name,
+				size: obj.size,
+				date: obj.file.lastModifiedDate,
+				ContactID: id
+			};
+			fileStorage.add(item);
 		});
 	}
 
@@ -63,7 +73,8 @@ export default class FilesTable extends JetView {
 			contacts.waitData
 		]).then(() => {
 			let id = this.getParam("id");
-			console.log(contacts.getItem(id).fileData);
+
+			fileStorage.filter(obj => obj.ContactID.toString() === id.toString());
 		});
 	}
 }

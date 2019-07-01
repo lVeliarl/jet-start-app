@@ -3,6 +3,7 @@ import {contacts} from "../models/contacts";
 import ActivitiesTable from "./contacts/activitiesTable";
 import FilesTable from "./contacts/filesTable";
 import {statuses} from "../models/statuses";
+import {activities} from "../models/activities";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -321,4 +322,4 @@ export default class ContactsView extends JetView {
 	}
 }
 
-// files: handle file saving
+// TODO: refactor contacts.js

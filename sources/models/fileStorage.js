@@ -1,3 +1,3 @@
-export const files = new webix.DataCollection({
-
+export const fileStorage = new webix.DataCollection({
+	data: []
 });
