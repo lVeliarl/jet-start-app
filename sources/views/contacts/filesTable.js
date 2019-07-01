@@ -43,8 +43,7 @@ export default class FilesTable extends JetView {
 							type: "icon",
 							icon: "mdi mdi-cloud-upload",
 							label: "Upload file",
-							css: "webix_primary",
-							upload: "./"
+							css: "webix_primary"
 						},
 						{}
 					]}
@@ -65,13 +64,12 @@ export default class FilesTable extends JetView {
 				ContactID: id
 			};
 			fileStorage.add(item);
+			return false;
 		});
 	}
 
 	urlChange() {
-		webix.promise.all([
-			contacts.waitData
-		]).then(() => {
+		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 
 			fileStorage.filter(obj => obj.ContactID.toString() === id.toString());

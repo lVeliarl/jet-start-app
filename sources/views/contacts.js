@@ -3,7 +3,6 @@ import {contacts} from "../models/contacts";
 import ActivitiesTable from "./contacts/activitiesTable";
 import FilesTable from "./contacts/filesTable";
 import {statuses} from "../models/statuses";
-import {activities} from "../models/activities";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -69,7 +68,7 @@ export default class ContactsView extends JetView {
 										</div>
 										<div class='row row2'>
 											<div class='column column1'>
-												<span class='photo'></span>
+												<img src=${obj.Photo || placeholder} width=200 height=200></span>
 												<h4 class='label'>${obj.Status || "-"}</h4>
 											</div>
 											<div class='column column2'>
@@ -214,6 +213,40 @@ export default class ContactsView extends JetView {
 											format: webix.i18n.longDateFormatStr,
 											label: "Birthday",
 											name: "Birthday"
+										},
+										{
+											cols: [
+												{
+													template: obj => `<img src=${obj || placeholder} width=180 height=180></img>`,
+													localId: "photoPreview",
+													width: 200,
+													height: 200,
+													borderless: true
+												},
+												{
+													rows: [
+														{},
+														{
+															view: "uploader",
+															value: "Change photo",
+															accept: "image/jpeg, image/png",
+															multiple: "false",
+															on: {
+																onBeforeFileAdd: (img) => {
+																	console.log(img);
+																	let reader = new FileReader();
+																	reader.onload = (event) => {
+																		this.$$("photoPreview").setValues(event.target.result);
+																	};
+																	reader.readAsDataURL(img.file);
+																	return false;
+																}
+															}
+														},
+														{view: "button", value: "Delete photo"}
+													]
+												}
+											]
 										},
 										{}
 									]}
