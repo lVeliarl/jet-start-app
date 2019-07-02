@@ -154,6 +154,9 @@ export default class ContactsView extends JetView {
 								view: "form",
 								localId: "editContact",
 								borderless: true,
+								elementsConfig: {
+									labelWidth: 150
+								},
 								cols: [
 									{rows: [
 										{
@@ -195,11 +198,13 @@ export default class ContactsView extends JetView {
 										{
 											view: "text",
 											label: "Address",
-											name: "Address"
+											name: "Address",
+											height: 100
 										},
 										{}
 									],
-									margin: 20},
+									margin: 20
+									},
 									{rows: [
 										{
 											view: "text",
@@ -225,10 +230,11 @@ export default class ContactsView extends JetView {
 										{
 											cols: [
 												{
-													template: obj => `<img src=${obj || placeholder} width=180 height=180></img>`,
+													template: obj => `<img src=${obj || placeholder} width=230 height=230></img>`,
 													localId: "photoPreview",
-													width: 200,
-													height: 200,
+													name: "Photo",
+													width: 250,
+													height: 250,
 													borderless: true
 												},
 												{
@@ -261,14 +267,15 @@ export default class ContactsView extends JetView {
 																item.Photo = "";
 															}
 														}
-													]
+													],
+													margin: 10
 												}
 											]
 										},
 										{}
 									],
-									margin: 20}
-
+									margin: 20
+									}
 								]
 							}
 						]},
@@ -284,7 +291,6 @@ export default class ContactsView extends JetView {
 									let value = this.$$("saveContact").getValue();
 									if (value === "Add") {
 										contacts.remove(contacts.getLastId());
-										activities.remove(activities.getLastId());
 										list.select(contacts.getFirstId());
 									}
 									if (value === "Save") {
@@ -302,8 +308,8 @@ export default class ContactsView extends JetView {
 								css: "webix_primary",
 								click: () => {
 									let id = this.getParam("id");
-									let value = this.$$("editContact").getValues();
 									let form = this.$$("editContact");
+									let value = form.getValues();
 									if (contacts.exists(id)) {
 										contacts.updateItem(id, value);
 									}
@@ -374,6 +380,7 @@ export default class ContactsView extends JetView {
 			selectedContact.Status = selectedStatusID.Value;
 			this.$$("contactsInfo").setValues(selectedContact);
 			this.$$("editContact").setValues(selectedContact);
+
 			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 			this.$$("photoPreview").setValues(placeholder);
 		});
