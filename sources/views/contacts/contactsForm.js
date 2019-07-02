@@ -173,10 +173,10 @@ export default class ContactsForm extends JetView {
 							let form = this.$$("editContact");
 							let value = form.getValues();
 							if (form.validate()) {
+								value.Photo = this.$$("photoPreview").getValues();
 								if (contacts.exists(id)) {
 									contacts.updateItem(id, value);
 								}
-								contacts.getItem(id).Photo = this.$$("photoPreview").getValues();
 								webix.message("Entry successfully saved");
 								webix.$$("top:contactsInfo").show(false, false);
 								form.clear();
