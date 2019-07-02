@@ -3,6 +3,7 @@ import {contacts} from "../models/contacts";
 import ActivitiesTable from "./contacts/activitiesTable";
 import FilesTable from "./contacts/filesTable";
 import {statuses} from "../models/statuses";
+import {activities} from "../models/activities";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -101,6 +102,10 @@ export default class ContactsView extends JetView {
 													text: "Do yo really want to remove this contatct?"
 												}).then(() => {
 													contacts.remove(id);
+													let contactActivities = activities.find(obj => obj.ContactID.toString() === id.toString());
+													contactActivities.forEach((obj) => {
+														activities.remove(obj.id);
+													});
 													this.$$("contacts").select(contacts.getLastId());
 												});
 											}
@@ -212,7 +217,7 @@ export default class ContactsView extends JetView {
 											view: "datepicker",
 											format: webix.i18n.longDateFormatStr,
 											label: "Birthday",
-											name: "Birthday"
+											name: "birthDate"
 										},
 										{
 											cols: [
@@ -233,9 +238,10 @@ export default class ContactsView extends JetView {
 															multiple: "false",
 															on: {
 																onBeforeFileAdd: (img) => {
-																	console.log(img);
+																	let item = contacts.getItem(this.getParam("id"));
 																	let reader = new FileReader();
 																	reader.onload = (event) => {
+																		item.Photo = event.target.result;
 																		this.$$("photoPreview").setValues(event.target.result);
 																	};
 																	reader.readAsDataURL(img.file);
@@ -243,7 +249,15 @@ export default class ContactsView extends JetView {
 																}
 															}
 														},
-														{view: "button", value: "Delete photo"}
+														{
+															view: "button",
+															value: "Delete photo",
+															click: () => {
+																let item = contacts.getItem(this.getParam("id"));
+																this.$$("photoPreview").setValues(placeholder);
+																item.Photo = "";
+															}
+														}
 													]
 												}
 											]
@@ -266,6 +280,7 @@ export default class ContactsView extends JetView {
 									let value = this.$$("saveContact").getValue();
 									if (value === "Add") {
 										contacts.remove(contacts.getLastId());
+										activities.remove(activities.getLastId());
 										list.select(contacts.getFirstId());
 									}
 									if (value === "Save") {
@@ -351,6 +366,10 @@ export default class ContactsView extends JetView {
 
 			selectedContact.Status = selectedStatusID.Value;
 			this.$$("contactsInfo").setValues(selectedContact);
+			this.$$("editContact").setValues(selectedContact);
+
+			let item = contacts.getItem(this.getParam("id"));
+			this.$$("photoPreview").setValues(item.Photo);
 		});
 	}
 }
