@@ -116,10 +116,8 @@ export default class ContactsForm extends JetView {
 													multiple: "false",
 													on: {
 														onBeforeFileAdd: (img) => {
-															let item = contacts.getItem(this.getParam("id"));
 															let reader = new FileReader();
 															reader.onload = (event) => {
-																item.Photo = event.target.result;
 																this.$$("photoPreview").setValues(event.target.result);
 															};
 															reader.readAsDataURL(img.file);
@@ -218,7 +216,6 @@ export default class ContactsForm extends JetView {
 			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 			this.$$("photoPreview").setValues(placeholder);
 			this.$$("editContact").setValues(item);
-			console.log(contacts.getItem(id), this.$$("photoPreview").getValues());
 		});
 	}
 }
