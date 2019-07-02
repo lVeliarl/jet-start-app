@@ -47,7 +47,8 @@ export default class ActivitiesTable extends JetView {
 						label: "Add activity",
 						css: "webix_primary",
 						click: () => {
-							this.window.showWindow(null, "Add", true);
+							let id = this.getParam("id");
+							this.window.showWindow(null, "Add", id, true);
 						}
 					}
 				]}

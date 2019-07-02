@@ -102,7 +102,9 @@ export default class ContactsView extends JetView {
 													text: "Do yo really want to remove this contatct?"
 												}).then(() => {
 													contacts.remove(id);
-													let contactActivities = activities.find(obj => obj.ContactID.toString() === id.toString());
+													let contactActivities = activities.find(
+														obj => obj.ContactID.toString() === id.toString()
+													);
 													contactActivities.forEach((obj) => {
 														activities.remove(obj.id);
 													});
@@ -196,7 +198,8 @@ export default class ContactsView extends JetView {
 											name: "Address"
 										},
 										{}
-									]},
+									],
+									margin: 20},
 									{rows: [
 										{
 											view: "text",
@@ -263,7 +266,8 @@ export default class ContactsView extends JetView {
 											]
 										},
 										{}
-									]}
+									],
+									margin: 20}
 
 								]
 							}
@@ -327,8 +331,8 @@ export default class ContactsView extends JetView {
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 
-			this.$$("contacts").data.attachEvent("onIdChange", () => {
-				this.$$("contacts").select(contacts.getLastId());
+			contactsList.data.attachEvent("onIdChange", () => {
+				contactsList.select(contacts.getLastId());
 			});
 
 			if (!contacts.exists(id)) {
@@ -337,6 +341,9 @@ export default class ContactsView extends JetView {
 			else if (id && id !== contactsList.getSelectedId()) {
 				contactsList.select(id);
 			}
+
+			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+			this.$$("photoPreview").setValues(placeholder);
 		});
 	}
 
@@ -367,9 +374,8 @@ export default class ContactsView extends JetView {
 			selectedContact.Status = selectedStatusID.Value;
 			this.$$("contactsInfo").setValues(selectedContact);
 			this.$$("editContact").setValues(selectedContact);
-
-			let item = contacts.getItem(this.getParam("id"));
-			this.$$("photoPreview").setValues(item.Photo);
+			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+			this.$$("photoPreview").setValues(placeholder);
 		});
 	}
 }

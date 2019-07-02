@@ -88,8 +88,7 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	showWindow(item, mode, disabled) {
-		let id = this.getParam("id");
+	showWindow(item, mode, id, disabled) {
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
@@ -97,6 +96,7 @@ export default class PopupView extends JetView {
 		if (disabled) {
 			this.$$("contact").disable();
 		}
+
 		form.setValues(item || {ContactID: id, convertedDate: new Date(), convertedTime: new Date()});
 		editButton.setValue(`${mode}`);
 		windowHeader.setHTML(`${mode} activity`);
