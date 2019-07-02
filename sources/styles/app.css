@@ -106,3 +106,11 @@
 .wrapper .mdi::before {
     margin: 0 5px 0 0;
 }
+
+.info h2 {
+    font-size: 34px;
+}
+
+.webix_template h2 {
+    margin: 0;
+}

@@ -13,7 +13,6 @@ export default class ContactsView extends JetView {
 			width: 220,
 			select: true,
 			scroll: "auto",
-			borderless: true,
 			template: obj => `<div class='wrapper card'>
 				<div class='row'>
 					<div class='column'>
