@@ -60,6 +60,7 @@ export default class ContactInfo extends JetView {
 											);
 											contactActivities.forEach((obj) => {
 												activities.remove(obj.id);
+												console.log(obj.id);
 											});
 										});
 									}

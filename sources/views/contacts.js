@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
-import ContactInfo from "./contacts/contactInfo";
+import ContactInfo from "./contacts/contactsInfo";
 import ContactsForm from "./contacts/contactsForm";
 
 export default class ContactsView extends JetView {
@@ -92,4 +92,3 @@ export default class ContactsView extends JetView {
 	}
 }
 
-// TODO: refactor contacts.js
