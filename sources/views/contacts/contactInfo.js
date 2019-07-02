@@ -74,7 +74,7 @@ export default class ContactInfo extends JetView {
 										let id = this.getParam("id");
 										let item = contacts.getItem(id);
 										this.app.callEvent("editContact", [item, "Edit"]);
-										webix.$$("test2").show(false, false);
+										webix.$$("top:contactsForm").show(false, false);
 									}
 								}
 							],

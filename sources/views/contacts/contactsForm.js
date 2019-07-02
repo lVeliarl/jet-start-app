@@ -116,10 +116,8 @@ export default class ContactsForm extends JetView {
 													multiple: "false",
 													on: {
 														onBeforeFileAdd: (img) => {
-															let item = contacts.getItem(this.getParam("id"));
 															let reader = new FileReader();
 															reader.onload = (event) => {
-																item.Photo = event.target.result;
 																this.$$("photoPreview").setValues(event.target.result);
 															};
 															reader.readAsDataURL(img.file);
@@ -160,7 +158,7 @@ export default class ContactsForm extends JetView {
 							if (value === "Add") {
 								contacts.remove(contacts.getLastId());
 							}
-							webix.$$("test1").show(false, false);
+							webix.$$("top:contactsInfo").show(false, false);
 							form.clear();
 							form.clearValidation();
 						}
@@ -177,9 +175,10 @@ export default class ContactsForm extends JetView {
 							if (form.validate()) {
 								if (contacts.exists(id)) {
 									contacts.updateItem(id, value);
+									contacts.getItem(id).Photo = this.$$("photoPreview").getValues();
 								}
 								webix.message("Entry successfully saved");
-								webix.$$("test1").show(false, false);
+								webix.$$("top:contactsInfo").show(false, false);
 								form.clear();
 								form.clearValidation();
 							}

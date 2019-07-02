@@ -49,14 +49,14 @@ export default class ContactsView extends JetView {
 							click: () => {
 								contacts.add({FirstName: "John", LastName: "Doe", StatusID: 1});
 								this.app.callEvent("addContact", [null, "Add"]);
-								webix.$$("test2").show(false, false);
+								webix.$$("top:contactsForm").show(false, false);
 							}
 						}
 					]
 				},
 				{cells: [
-					{$subview: ContactInfo, id: "test1"},
-					{$subview: ContactsForm, id: "test2"}
+					{$subview: ContactInfo, id: "top:contactsInfo"},
+					{$subview: ContactsForm, id: "top:contactsForm"}
 				]
 				}
 			],
