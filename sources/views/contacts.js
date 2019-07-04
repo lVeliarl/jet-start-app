@@ -38,6 +38,21 @@ export default class ContactsView extends JetView {
 			cols: [
 				{
 					rows: [
+						{
+							view: "text",
+							localId: "contactFilter",
+							placeholder: "type to find matching contacts",
+							css: "contact_filter",
+							on: {
+								onTimedKeyPress() {
+									let value = this.getValue().toLowerCase();
+									contacts.filter((obj) => {
+										const filterValues = [obj.FirstName, obj.LastName, obj.Company].join("|");
+										return filterValues.toLowerCase().indexOf(value) !== -1;
+									});
+								}
+							}
+						},
 						contactsList,
 						{
 							view: "button",
