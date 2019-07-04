@@ -4,6 +4,8 @@ import {fileStorage} from "../../models/fileStorage";
 
 export default class FilesTable extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -12,11 +14,11 @@ export default class FilesTable extends JetView {
 					scroll: "auto",
 					select: true,
 					columns: [
-						{id: "name", header: "Name", template: "", fillspace: true, sort: "string"},
-						{id: "date", header: "Change date", template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
+						{id: "name", header: _("Name"), template: "", fillspace: true, sort: "string"},
+						{id: "date", header: _("Change date"), template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
 						{
 							id: "size",
-							header: "Size",
+							header: _("Size"),
 							template: obj => `${obj.size}Kb`,
 							sort: "int"
 						},
@@ -42,7 +44,7 @@ export default class FilesTable extends JetView {
 							localId: "uploadFiles",
 							type: "icon",
 							icon: "mdi mdi-cloud-upload",
-							label: "Upload file",
+							label: _("Upload file"),
 							css: "webix_primary"
 						},
 						{}

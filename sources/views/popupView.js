@@ -5,6 +5,8 @@ import {contacts} from "../models/contacts";
 
 export default class PopupView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const popupForm = {
 			view: "form",
 			localId: "popup_form",
@@ -16,32 +18,32 @@ export default class PopupView extends JetView {
 			elements: [
 				{
 					view: "text",
-					label: "Details",
+					label: _("Details"),
 					height: 100,
 					name: "Details",
 					resize: true
 				},
 				{
 					view: "richselect",
-					label: "Type",
+					label: _("Type"),
 					name: "TypeID",
 					options: activityTypes,
-					invalidMessage: "Please select an option"
+					invalidMessage: _("Please select an option")
 				},
 				{
 					view: "richselect",
 					localId: "contact",
-					label: "Contact",
+					label: _("Contact"),
 					name: "ContactID",
 					options: contacts,
-					invalidMessage: "Please select an option"
+					invalidMessage: _("Please select an option")
 
 				},
 				{cols: [
-					{view: "datepicker", label: "Date", name: "convertedDate"},
-					{view: "datepicker", type: "time", label: "Time", name: "convertedTime"}
+					{view: "datepicker", label: _("Date"), name: "convertedDate"},
+					{view: "datepicker", type: "time", label: _("Time"), name: "convertedTime"}
 				]},
-				{view: "checkbox", name: "State", labelRight: "Selected", labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
+				{view: "checkbox", name: "State", labelRight: _("Completed"), labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
 				{cols: [
 					{gravity: 4},
 					{
@@ -64,7 +66,7 @@ export default class PopupView extends JetView {
 					},
 					{
 						view: "button",
-						value: "Cancel",
+						value: _("Cancel"),
 						click: () => {
 							this.closeWindow();
 						}

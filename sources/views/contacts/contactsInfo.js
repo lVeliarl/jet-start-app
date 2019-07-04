@@ -7,6 +7,8 @@ import {statuses} from "../../models/statuses";
 
 export default class ContactInfo extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 		return {
@@ -44,15 +46,15 @@ export default class ContactInfo extends JetView {
 							{cols: [
 								{
 									view: "button",
-									label: "Delete",
+									label: _("Delete"),
 									css: "webix_primary",
 									type: "icon",
 									icon: "mdi mdi-trash-can",
 									click: () => {
 										let id = this.getParam("id");
 										this.webix.confirm({
-											title: "Delete this contact",
-											text: "Do yo really want to remove this contatct?"
+											title: _("Delete this contact"),
+											text: _("Do you really want to remove this contatct?")
 										}).then(() => {
 											contacts.remove(id);
 											let contactActivities = activities.find(
@@ -66,7 +68,7 @@ export default class ContactInfo extends JetView {
 								},
 								{
 									view: "button",
-									label: "Edit",
+									label: _("Edit"),
 									css: "webix_primary",
 									type: "icon",
 									icon: "mdi mdi-file-document-edit",
@@ -87,8 +89,8 @@ export default class ContactInfo extends JetView {
 					view: "segmented",
 					multiview: true,
 					options: [
-						{id: "activitiesSwitch", value: "Activities"},
-						{id: "filesSwitch", value: "Files"}
+						{id: "activitiesSwitch", value: _("Activities")},
+						{id: "filesSwitch", value: _("Files")}
 					]
 				},
 				{

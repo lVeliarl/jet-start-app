@@ -4,6 +4,8 @@ import {statuses} from "../../models/statuses";
 
 export default class ContactsForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 		return {
@@ -27,45 +29,45 @@ export default class ContactsForm extends JetView {
 							{rows: [
 								{
 									view: "text",
-									label: "First name",
+									label: _("First name"),
 									name: "FirstName"
 								},
 								{
 									view: "text",
-									label: "Last name",
+									label: _("Last name"),
 									name: "LastName"
 								},
 								{
 									view: "datepicker",
-									label: "Joining date",
+									label: _("Joining date"),
 									name: "StartDate",
 									format: webix.i18n.longDateFormatStr,
-									invalidMessage: "Please select a date"
+									invalidMessage: _("Please select a date")
 								},
 								{
 									view: "richselect",
-									label: "Status",
+									label: _("Status"),
 									name: "StatusID",
 									options: statuses
 								},
 								{
 									view: "text",
-									label: "Job",
+									label: _("Job"),
 									name: "Job"
 								},
 								{
 									view: "text",
-									label: "Company",
+									label: _("Company"),
 									name: "Company"
 								},
 								{
 									view: "text",
-									label: "Website",
+									label: _("Website"),
 									name: "Website"
 								},
 								{
 									view: "text",
-									label: "Address",
+									label: _("Address"),
 									name: "Address",
 									height: 100
 								},
@@ -76,25 +78,25 @@ export default class ContactsForm extends JetView {
 							{rows: [
 								{
 									view: "text",
-									label: "Email",
+									label: _("Email"),
 									name: "Email"
 								},
 								{
 									view: "text",
-									label: "Skype",
+									label: _("Skype"),
 									name: "Skype"
 								},
 								{
 									view: "text",
-									label: "Phone",
+									label: _("Phone"),
 									name: "Phone"
 								},
 								{
 									view: "datepicker",
-									label: "Birthday",
+									label: _("Birthday"),
 									name: "birthDate",
 									format: webix.i18n.longDateFormatStr,
-									invalidMessage: "Please select a date"
+									invalidMessage: _("Please select a date")
 								},
 								{
 									cols: [
@@ -111,7 +113,7 @@ export default class ContactsForm extends JetView {
 												{},
 												{
 													view: "uploader",
-													value: "Change photo",
+													value: _("Change photo"),
 													accept: "image/jpeg, image/png",
 													multiple: "false",
 													on: {
@@ -127,7 +129,7 @@ export default class ContactsForm extends JetView {
 												},
 												{
 													view: "button",
-													value: "Delete photo",
+													value: _("Delete photo"),
 													click: () => {
 														let item = contacts.getItem(this.getParam("id"));
 														this.$$("photoPreview").setValues(placeholder);
@@ -151,7 +153,7 @@ export default class ContactsForm extends JetView {
 					{},
 					{
 						view: "button",
-						value: "Cancel",
+						value: _("Cancel"),
 						click: () => {
 							let form = this.$$("editContact");
 							let value = this.$$("saveContact").getValue();

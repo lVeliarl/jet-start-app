@@ -5,6 +5,8 @@ import ContactsForm from "./contacts/contactsForm";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 		const contactsList = {
@@ -58,7 +60,7 @@ export default class ContactsView extends JetView {
 							view: "button",
 							type: "icon",
 							icon: "mdi mdi-plus-box",
-							label: "Add contact",
+							label: _("Add contact"),
 							css: "webix_primary",
 							click: () => {
 								contacts.add({FirstName: "John", LastName: "Doe", StatusID: 1});

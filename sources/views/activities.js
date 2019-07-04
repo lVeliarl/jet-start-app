@@ -6,14 +6,16 @@ import PopupView from "./popupView";
 
 export default class ActivitiesView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const filterOptions = [
-			{id: "1", value: "All"},
-			{id: "2", value: "Overdue"},
-			{id: "3", value: "Completed"},
-			{id: "4", value: "Today"},
-			{id: "5", value: "Tomorrow"},
-			{id: "6", value: "This week"},
-			{id: "7", value: "This month"}
+			{id: "1", value: _("All")},
+			{id: "2", value: _("Overdue")},
+			{id: "3", value: _("Completed")},
+			{id: "4", value: _("Today")},
+			{id: "5", value: _("Tomorrow")},
+			{id: "6", value: _("This week")},
+			{id: "7", value: _("This month")}
 		];
 
 		return {
@@ -35,7 +37,7 @@ export default class ActivitiesView extends JetView {
 					{
 						view: "button",
 						localId: "add",
-						label: "Add activity",
+						label: _("Add activity"),
 						type: "icon",
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
@@ -50,10 +52,10 @@ export default class ActivitiesView extends JetView {
 					select: true,
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
-						{id: "TypeID", header: ["Activity type", {content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "convertedDate", header: ["Due date", {content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
-						{id: "Details", header: ["Details", {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
-						{id: "ContactID", header: ["Contact", {content: "richSelectFilter"}], options: contacts, sort: "string", fillspace: true},
+						{id: "TypeID", header: [_("Activity type"), {content: "richSelectFilter"}], options: activityTypes, sort: "string", fillspace: true},
+						{id: "convertedDate", header: [_("Due date"), {content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "Details", header: [_("Details"), {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+						{id: "ContactID", header: [_("Contact"), {content: "richSelectFilter"}], options: contacts, sort: "string", fillspace: true},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit edit_entry'></span>"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
 					],

@@ -6,6 +6,8 @@ import PopupView from "../popupView";
 
 export default class ActivitiesTable extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -44,7 +46,7 @@ export default class ActivitiesTable extends JetView {
 						view: "button",
 						type: "icon",
 						icon: "mdi mdi-plus-box",
-						label: "Add activity",
+						label: _("Add activity"),
 						css: "webix_primary",
 						click: () => {
 							let id = this.getParam("id");
