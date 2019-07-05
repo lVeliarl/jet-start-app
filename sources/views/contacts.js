@@ -86,6 +86,7 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "editContact", (mode) => {
+			this.setParam("mode", "form", true);
 			if (mode === "Add") {
 				contactsList.unselectAll();
 			}
@@ -93,6 +94,7 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "editCancel", () => {
+			this.setParam("mode", "info", true);
 			this.$$("top:contactsInfo").show(false, false);
 		});
 	}

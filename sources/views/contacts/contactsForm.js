@@ -1,11 +1,10 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
+import {placeholder} from "../../helpers/placeholder";
 
 export default class ContactsForm extends JetView {
 	config() {
-		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
-
 		return {
 			rows: [
 				{template: "Edit (add new) contact", localId: "formHeader", height: 100, borderless: true},
@@ -193,6 +192,7 @@ export default class ContactsForm extends JetView {
 		});
 
 		this.on(this.app, "editContact", (mode) => {
+			this.setParam("mode", "form", true);
 			let item = contacts.getItem(this.getParam("id"));
 			if (mode === "Edit") {
 				formHeader.setHTML("<h2>Edit contact</h2>");
@@ -215,7 +215,6 @@ export default class ContactsForm extends JetView {
 		]).then(() => {
 			let id = this.getParam("id");
 			let item = contacts.getItem(id);
-			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 			if (item.Photo === "") {
 				this.$$("photoPreview").setValues(placeholder);

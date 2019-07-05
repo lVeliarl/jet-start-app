@@ -1,13 +1,12 @@
 import {JetView} from "webix-jet";
 import ActivitiesTable from "./activitiesTable";
 import FilesTable from "./filesTable";
-import {activities} from "../../models/activities";
 import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
+import {placeholder} from "../../helpers/placeholder";
 
 export default class ContactInfo extends JetView {
 	config() {
-		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 		const format = webix.Date.dateToStr("%d-%m-%Y");
 
 		return {
@@ -98,7 +97,6 @@ export default class ContactInfo extends JetView {
 		// contacts.attachEvent("onDataUpdate", () => {
 		// 	this.$$("contactsInfo").setValues(contacts.getItem(this.getParam("id")));
 		// });
-
 	}
 
 	urlChange() {
