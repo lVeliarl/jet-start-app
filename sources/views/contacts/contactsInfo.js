@@ -66,7 +66,7 @@ export default class ContactInfo extends JetView {
 									type: "icon",
 									icon: "mdi mdi-file-document-edit",
 									click: () => {
-										this.app.callEvent("editContact", ["Edit"]);
+										this.app.callEvent("editContact", ["Save"]);
 									}
 								}
 							],
@@ -105,12 +105,14 @@ export default class ContactInfo extends JetView {
 			statuses.waitData
 		]).then(() => {
 			let id = this.getParam("id");
-			let selectedContact = webix.copy(contacts.getItem(id));
-			let selectedStatusID = statuses.getItem(selectedContact.StatusID);
-			let contactsInfo = this.$$("contactsInfo");
+			if (contacts.exists(id)) {
+				let selectedContact = webix.copy(contacts.getItem(id));
+				let selectedStatusID = statuses.getItem(selectedContact.StatusID);
+				let contactsInfo = this.$$("contactsInfo");
 
-			selectedContact.Status = selectedStatusID.Value;
-			contactsInfo.setValues(selectedContact);
+				selectedContact.Status = selectedStatusID.Value;
+				contactsInfo.setValues(selectedContact);
+			}
 		});
 	}
 }

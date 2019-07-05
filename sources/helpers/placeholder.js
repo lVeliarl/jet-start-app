@@ -1,1 +1,1 @@
-export const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+export const placeholder = "../sources/assets/avatar-placeholder.png";

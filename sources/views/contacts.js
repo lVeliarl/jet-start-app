@@ -72,17 +72,11 @@ export default class ContactsView extends JetView {
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
 			}
-			else if (id && id !== contactsList.getSelectedId()) {
+
+			if (id && id !== contactsList.getSelectedId()) {
 				contactsList.select(id);
+				contactsList.showItem(id);
 			}
-		});
-
-		// contactsList.data.attachEvent("onIdChange", () => {
-		// 	contactsList.select(contacts.getLastId());
-		// });
-
-		contacts.attachEvent("onAfterDelete", () => {
-			contactsList.select(contacts.getFirstId());
 		});
 
 		this.on(this.app, "editContact", (mode) => {
@@ -95,6 +89,22 @@ export default class ContactsView extends JetView {
 		this.on(this.app, "editCancel", () => {
 			this.$$("top:contactsInfo").show(false, false);
 		});
+	}
+
+	urlChange() {
+		let contactsList = this.$$("contacts");
+		console.log("test");
+		// contacts.waitData.then(() => {
+		// 	let id = this.getParam("id");
+
+		// 	if (id && !contactsList.exists(id)) {
+		// 		contactsList.select(contacts.getFirstId());
+		// 	}
+
+		// 	if (id && id !== contactsList.getSelectedId()) {
+		// 		contactsList.select(id);
+		// 	}
+		// });
 	}
 }
 

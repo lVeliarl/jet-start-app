@@ -170,7 +170,11 @@ export default class ContactsForm extends JetView {
 									contacts.updateItem(value.id, value);
 								}
 								else {
-									contacts.add(value);
+									contacts.waitSave(() => {
+										contacts.add(value);
+									}).then((res) => {
+										this.setParam("id", res.id, true);
+									});
 								}
 								this.app.callEvent("editCancel");
 								webix.message("Entry successfully saved");
@@ -187,24 +191,18 @@ export default class ContactsForm extends JetView {
 		let updateButton = this.$$("saveContact");
 		let formHeader = this.$$("formHeader");
 
-		this.$$("editContact").attachEvent("onHide", () => {
-			console.log("1");
-		});
-
 		this.on(this.app, "editContact", (mode) => {
-			this.setParam("mode", "form", true);
 			let item = contacts.getItem(this.getParam("id"));
-			if (mode === "Edit") {
+			if (mode === "Save") {
 				formHeader.setHTML("<h2>Edit contact</h2>");
-				updateButton.setValue("Save");
 				this.$$("editContact").setValues(item);
 			}
 			if (mode === "Add") {
-				this.setParam("id", "", true);
+				this.show("contacts");
 				formHeader.setHTML("<h2>Add new contact</h2>");
-				updateButton.setValue("Add");
 				this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
 			}
+			updateButton.setValue(mode);
 		});
 	}
 
