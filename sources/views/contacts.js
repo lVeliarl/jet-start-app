@@ -77,16 +77,15 @@ export default class ContactsView extends JetView {
 			}
 		});
 
-		contactsList.data.attachEvent("onIdChange", () => {
-			contactsList.select(contacts.getLastId());
-		});
+		// contactsList.data.attachEvent("onIdChange", () => {
+		// 	contactsList.select(contacts.getLastId());
+		// });
 
 		contacts.attachEvent("onAfterDelete", () => {
 			contactsList.select(contacts.getFirstId());
 		});
 
 		this.on(this.app, "editContact", (mode) => {
-			this.setParam("mode", "form", true);
 			if (mode === "Add") {
 				contactsList.unselectAll();
 			}
@@ -94,7 +93,6 @@ export default class ContactsView extends JetView {
 		});
 
 		this.on(this.app, "editCancel", () => {
-			this.setParam("mode", "info", true);
 			this.$$("top:contactsInfo").show(false, false);
 		});
 	}

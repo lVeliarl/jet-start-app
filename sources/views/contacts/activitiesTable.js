@@ -69,7 +69,7 @@ export default class ActivitiesTable extends JetView {
 
 			activitiesTable.sync(activities);
 
-			// console.log(activitiesTable.getFilter("TypeID"));
+			activitiesTable.getFilter("TypeID").setValue("");
 			activitiesTable.filter(obj => obj.ContactID.toString() === id.toString());
 		});
 	}
