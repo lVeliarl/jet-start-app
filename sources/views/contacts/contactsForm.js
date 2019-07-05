@@ -21,7 +21,7 @@ export default class ContactsForm extends JetView {
 							FirstName: webix.rules.isNotEmpty,
 							LastName: webix.rules.isNotEmpty,
 							StartDate: webix.rules.isNotEmpty,
-							birthDate: webix.rules.isNotEmpty
+							Birthday: webix.rules.isNotEmpty
 						},
 						cols: [
 							{rows: [
@@ -92,7 +92,7 @@ export default class ContactsForm extends JetView {
 								{
 									view: "datepicker",
 									label: "Birthday",
-									name: "birthDate",
+									name: "Birthday",
 									format: webix.i18n.longDateFormatStr,
 									invalidMessage: "Please select a date"
 								},
@@ -153,14 +153,8 @@ export default class ContactsForm extends JetView {
 						view: "button",
 						value: "Cancel",
 						click: () => {
-							let form = this.$$("editContact");
-							let value = this.$$("saveContact").getValue();
-							if (value === "Add") {
-								contacts.remove(contacts.getLastId());
-							}
-							webix.$$("top:contactsInfo").show(false, false);
-							form.clear();
-							form.clearValidation();
+							this.app.callEvent("editCancel");
+							this.clearForm();
 						}
 					},
 					{
@@ -169,18 +163,19 @@ export default class ContactsForm extends JetView {
 						localId: "saveContact",
 						css: "webix_primary",
 						click: () => {
-							let id = this.getParam("id");
 							let form = this.$$("editContact");
 							let value = form.getValues();
 							if (form.validate()) {
 								value.Photo = this.$$("photoPreview").getValues();
-								if (contacts.exists(id)) {
-									contacts.updateItem(id, value);
+								if (contacts.exists(value.id)) {
+									contacts.updateItem(value.id, value);
 								}
+								else {
+									contacts.add(value);
+								}
+								this.app.callEvent("editCancel");
 								webix.message("Entry successfully saved");
-								webix.$$("top:contactsInfo").show(false, false);
-								form.clear();
-								form.clearValidation();
+								this.clearForm();
 							}
 						}
 					}
@@ -193,16 +188,23 @@ export default class ContactsForm extends JetView {
 		let updateButton = this.$$("saveContact");
 		let formHeader = this.$$("formHeader");
 
-		this.on(this.app, "addContact", (item, mode) => {
-			formHeader.setHTML(`<h2>${mode} new contact</h2>`);
-			updateButton.setValue(`${mode}`);
-			this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
+		this.$$("editContact").attachEvent("onHide", () => {
+			console.log("1");
 		});
 
-		this.on(this.app, "editContact", (item, mode) => {
-			formHeader.setHTML(`<h2>${mode} contact</h2>`);
-			updateButton.setValue("Save");
-			this.$$("editContact").setValues(item);
+		this.on(this.app, "editContact", (mode) => {
+			let item = contacts.getItem(this.getParam("id"));
+			if (mode === "Edit") {
+				formHeader.setHTML("<h2>Edit contact</h2>");
+				updateButton.setValue("Save");
+				this.$$("editContact").setValues(item);
+			}
+			if (mode === "Add") {
+				this.setParam("id", "", true);
+				formHeader.setHTML("<h2>Add new contact</h2>");
+				updateButton.setValue("Add");
+				this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
+			}
 		});
 	}
 
@@ -214,8 +216,20 @@ export default class ContactsForm extends JetView {
 			let id = this.getParam("id");
 			let item = contacts.getItem(id);
 			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
-			this.$$("photoPreview").setValues(placeholder);
+
+			if (item.Photo === "") {
+				this.$$("photoPreview").setValues(placeholder);
+			}
+			else {
+				this.$$("photoPreview").setValues(item.Photo);
+			}
 			this.$$("editContact").setValues(item);
 		});
+	}
+
+	clearForm() {
+		let form = this.$$("editContact");
+		form.clear();
+		form.clearValidation();
 	}
 }

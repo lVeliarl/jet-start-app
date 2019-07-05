@@ -46,16 +46,14 @@ export default class ContactsView extends JetView {
 							label: "Add contact",
 							css: "webix_primary",
 							click: () => {
-								contacts.add({FirstName: "John", LastName: "Doe", StatusID: 1});
-								this.app.callEvent("addContact", [null, "Add"]);
-								webix.$$("top:contactsForm").show(false, false);
+								this.app.callEvent("editContact", ["Add"]);
 							}
 						}
 					]
 				},
 				{cells: [
-					{$subview: ContactInfo, id: "top:contactsInfo"},
-					{$subview: ContactsForm, id: "top:contactsForm"}
+					{rows: [{$subview: ContactInfo}], localId: "top:contactsInfo"},
+					{rows: [{$subview: ContactsForm}], localId: "top:contactsForm"}
 				]
 				}
 			],
@@ -71,23 +69,31 @@ export default class ContactsView extends JetView {
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
 
-			contactsList.data.attachEvent("onIdChange", () => {
-				contactsList.select(contacts.getLastId());
-			});
-
-			contacts.attachEvent("onAfterDelete", () => {
-				contactsList.select(contacts.getFirstId());
-			});
-
 			if (!contacts.exists(id)) {
 				contactsList.select(contacts.getFirstId());
 			}
 			else if (id && id !== contactsList.getSelectedId()) {
 				contactsList.select(id);
 			}
+		});
 
-			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
-			this.$$("photoPreview").setValues(placeholder);
+		contactsList.data.attachEvent("onIdChange", () => {
+			contactsList.select(contacts.getLastId());
+		});
+
+		contacts.attachEvent("onAfterDelete", () => {
+			contactsList.select(contacts.getFirstId());
+		});
+
+		this.on(this.app, "editContact", (mode) => {
+			if (mode === "Add") {
+				contactsList.unselectAll();
+			}
+			this.$$("top:contactsForm").show(false, false);
+		});
+
+		this.on(this.app, "editCancel", () => {
+			this.$$("top:contactsInfo").show(false, false);
 		});
 	}
 }

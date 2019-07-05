@@ -8,6 +8,7 @@ import {statuses} from "../../models/statuses";
 export default class ContactInfo extends JetView {
 	config() {
 		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+		const format = webix.Date.dateToStr("%d-%m-%Y");
 
 		return {
 			rows: [
@@ -32,13 +33,14 @@ export default class ContactInfo extends JetView {
 										<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
 									</div>
 									<div class='column column3'>
-										<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
+										<span class='mdi mdi-calendar-month'>${format(obj.Birthday) || "-"}</span>
 										<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
 									</div>
 								</div>
 							</div>`,
 							localId: "contactsInfo",
-							borderless: true
+							borderless: true,
+							format: webix.i18n.dateFormatStr
 						},
 						{rows: [
 							{cols: [
@@ -52,15 +54,9 @@ export default class ContactInfo extends JetView {
 										let id = this.getParam("id");
 										this.webix.confirm({
 											title: "Delete this contact",
-											text: "Do yo really want to remove this contatct?"
+											text: "Do you really want to remove this contact?"
 										}).then(() => {
 											contacts.remove(id);
-											let contactActivities = activities.find(
-												obj => obj.ContactID.toString() === id.toString()
-											);
-											contactActivities.forEach((obj) => {
-												activities.remove(obj.id);
-											});
 										});
 									}
 								},
@@ -71,10 +67,7 @@ export default class ContactInfo extends JetView {
 									type: "icon",
 									icon: "mdi mdi-file-document-edit",
 									click: () => {
-										let id = this.getParam("id");
-										let item = contacts.getItem(id);
-										this.app.callEvent("editContact", [item, "Edit"]);
-										webix.$$("top:contactsForm").show(false, false);
+										this.app.callEvent("editContact", ["Edit"]);
 									}
 								}
 							],
@@ -102,9 +95,10 @@ export default class ContactInfo extends JetView {
 	}
 
 	init() {
-		contacts.attachEvent("onDataUpdate", () => {
-			this.$$("contactsInfo").setValues(contacts.getItem(this.getParam("id")));
-		});
+		// contacts.attachEvent("onDataUpdate", () => {
+		// 	this.$$("contactsInfo").setValues(contacts.getItem(this.getParam("id")));
+		// });
+
 	}
 
 	urlChange() {
