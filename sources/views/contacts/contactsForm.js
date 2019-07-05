@@ -173,7 +173,7 @@ export default class ContactsForm extends JetView {
 									contacts.waitSave(() => {
 										contacts.add(value);
 									}).then((res) => {
-										this.setParam("id", res.id, true);
+										this.getParentView().setParam("id", res.id, true);
 									});
 								}
 								this.app.callEvent("editCancel");

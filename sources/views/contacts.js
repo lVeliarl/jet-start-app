@@ -94,17 +94,18 @@ export default class ContactsView extends JetView {
 	urlChange() {
 		let contactsList = this.$$("contacts");
 		console.log("test");
-		// contacts.waitData.then(() => {
-		// 	let id = this.getParam("id");
+		contacts.waitData.then(() => {
+			let id = this.getParam("id");
 
-		// 	if (id && !contactsList.exists(id)) {
-		// 		contactsList.select(contacts.getFirstId());
-		// 	}
+			if (id && !contactsList.exists(id)) {
+				contactsList.select(contacts.getFirstId());
+			}
 
-		// 	if (id && id !== contactsList.getSelectedId()) {
-		// 		contactsList.select(id);
-		// 	}
-		// });
+			if (id && id !== contactsList.getSelectedId()) {
+				contactsList.select(id);
+				contactsList.showItem(id);
+			}
+		});
 	}
 }
 
