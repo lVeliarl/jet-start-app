@@ -94,9 +94,9 @@ export default class ContactInfo extends JetView {
 	}
 
 	init() {
-		// contacts.attachEvent("onDataUpdate", () => {
-		// 	this.$$("contactsInfo").setValues(contacts.getItem(this.getParam("id")));
-		// });
+		contacts.attachEvent("onDataUpdate", () => {
+			this.$$("contactsInfo").setValues(contacts.getItem(this.getParam("id")));
+		});
 	}
 
 	urlChange() {

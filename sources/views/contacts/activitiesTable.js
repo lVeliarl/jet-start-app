@@ -32,8 +32,7 @@ export default class ActivitiesTable extends JetView {
 							return false;
 						},
 						edit_entry: (e, id) => {
-							let item = activities.getItem(id);
-							this.window.showWindow(item, "Edit");
+							this.window.showWindow("Edit", id);
 							return false;
 						}
 					}
@@ -48,7 +47,7 @@ export default class ActivitiesTable extends JetView {
 						css: "webix_primary",
 						click: () => {
 							let id = this.getParam("id");
-							this.window.showWindow(null, "Add", id, true);
+							this.window.showWindow("Add", id, true);
 						}
 					}
 				]}

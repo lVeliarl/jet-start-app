@@ -34,7 +34,7 @@ export default class ActivitiesView extends JetView {
 						icon: "mdi mdi-plus-box",
 						css: "webix_primary",
 						click: () => {
-							this.window.showWindow(null, "Add");
+							this.window.showWindow("Add");
 						}
 					}
 				]},
@@ -62,8 +62,7 @@ export default class ActivitiesView extends JetView {
 							return false;
 						},
 						edit_entry: (e, id) => {
-							let item = activities.getItem(id);
-							this.window.showWindow(item, "Edit");
+							this.window.showWindow("Edit", id);
 							return false;
 						}
 					}

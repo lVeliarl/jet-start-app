@@ -88,7 +88,8 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	showWindow(item, mode, id, disabled) {
+	showWindow(mode, id, disabled) {
+		let item = activities.getItem(id);
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
