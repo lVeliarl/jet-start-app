@@ -15,6 +15,7 @@ export default class ActivitiesTable extends JetView {
 					localId: "activities",
 					scroll: "auto",
 					select: true,
+					borderless: true,
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: [{content: "richSelectFilter"}], options: activityTypes, sort: "string"},

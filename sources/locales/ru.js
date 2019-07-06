@@ -65,5 +65,7 @@ export default {
 	"type to find matching contacts": "введите искомый контакт",
 	"<h2>Add new contact</h2>": "<h2>Добавить новый контакт</h2>",
 	"<h2>Edit contact</h2>": "<h2>Редактировать контакт</h2>",
-	"Edit activity": "Изменить задание"
+	"Edit activity": "Изменить задание",
+	"Delete this file": "Удалить этот файл",
+	"Are you sure you want to delete this file?": "Вы уверены, что хотите удалить этот файл?"
 };

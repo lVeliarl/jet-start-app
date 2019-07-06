@@ -19,6 +19,7 @@ export default class ActivitiesView extends JetView {
 		];
 
 		return {
+			type: "section",
 			rows: [
 				{cols: [
 					{
@@ -78,8 +79,7 @@ export default class ActivitiesView extends JetView {
 						}
 					}
 				}
-			],
-			type: "section"
+			]
 		};
 	}
 

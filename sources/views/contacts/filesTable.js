@@ -13,6 +13,7 @@ export default class FilesTable extends JetView {
 					localId: "files",
 					scroll: "auto",
 					select: true,
+					borderless: true,
 					columns: [
 						{id: "name", header: _("Name"), template: "", fillspace: true, sort: "string"},
 						{id: "date", header: _("Change date"), template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
@@ -27,8 +28,10 @@ export default class FilesTable extends JetView {
 					onClick: {
 						delete_file: (e, id) => {
 							webix.confirm({
-								title: "Delete this file",
-								text: "Are you sure you want to delete this file?"
+								title: _("Delete this file"),
+								text: _("Are you sure you want to delete this file?"),
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								this.$$("files").remove(id);
 							});
@@ -48,7 +51,8 @@ export default class FilesTable extends JetView {
 							css: "webix_primary"
 						},
 						{}
-					]}
+					]
+				}
 			]
 		};
 	}

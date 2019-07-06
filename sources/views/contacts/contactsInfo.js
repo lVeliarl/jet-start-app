@@ -42,48 +42,50 @@ export default class ContactInfo extends JetView {
 							localId: "contactsInfo",
 							borderless: true
 						},
-						{rows: [
-							{
-								view: "button",
-								label: _("Edit"),
-								css: "webix_primary",
-								width: 250,
-								type: "icon",
-								icon: "mdi mdi-file-document-edit",
-								click: () => {
-									let id = this.getParam("id");
-									let item = contacts.getItem(id);
-									this.app.callEvent("editContact", [item, "Edit"]);
-									webix.$$("top:contactsForm").show(false, false);
-								}
-							},
-							{
-								view: "button",
-								label: _("Delete"),
-								css: "webix_primary",
-								type: "icon",
-								width: 250,
-								icon: "mdi mdi-trash-can",
-								click: () => {
-									let id = this.getParam("id");
-									this.webix.confirm({
-										title: _("Delete this contact"),
-										text: _("Do you really want to remove this contatct?"),
-										ok: _("OK"),
-										cancel: _("Cancel")
-									}).then(() => {
-										contacts.remove(id);
-										let contactActivities = activities.find(
-											obj => obj.ContactID.toString() === id.toString()
-										);
-										contactActivities.forEach((obj) => {
-											activities.remove(obj.id);
+						{
+							padding: 20,
+							rows: [
+								{
+									view: "button",
+									label: _("Edit"),
+									css: "webix_primary",
+									width: 250,
+									type: "icon",
+									icon: "mdi mdi-file-document-edit",
+									click: () => {
+										let id = this.getParam("id");
+										let item = contacts.getItem(id);
+										this.app.callEvent("editContact", [item, "Edit"]);
+										webix.$$("top:contactsForm").show(false, false);
+									}
+								},
+								{
+									view: "button",
+									label: _("Delete"),
+									css: "webix_primary",
+									type: "icon",
+									width: 250,
+									icon: "mdi mdi-trash-can",
+									click: () => {
+										let id = this.getParam("id");
+										this.webix.confirm({
+											title: _("Delete this contact"),
+											text: _("Do you really want to remove this contatct?"),
+											ok: _("OK"),
+											cancel: _("Cancel")
+										}).then(() => {
+											contacts.remove(id);
+											let contactActivities = activities.find(
+												obj => obj.ContactID.toString() === id.toString()
+											);
+											contactActivities.forEach((obj) => {
+												activities.remove(obj.id);
+											});
 										});
-									});
-								}
-							},
-							{}
-						]}
+									}
+								},
+								{}
+							]}
 					]
 				},
 				{
