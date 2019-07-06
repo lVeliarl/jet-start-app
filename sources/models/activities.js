@@ -5,20 +5,12 @@ export const activities = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/activities/ ",
 	save: "rest->http://localhost:8096/api/v1/activities/",
 	scheme: {
-		$init: (obj) => {
-			if (!obj.convertedDate) {
-				obj.convertedDate = formatToDate(obj.DueDate);
-			}
-			if (!obj.convertedTime) {
-				obj.convertedTime = obj.convertedDate;
-			}
+		$change: (obj) => {
+			obj.DueDate = formatToDate(obj.DueDate);
+			obj.DueTime = formatToDate(obj.DueDate);
 		},
 		$save: (obj) => {
-			let time = obj.convertedTime;
-			let date = obj.convertedDate;
-			date.setHours(time.getHours());
-			date.setMinutes(time.getMinutes());
-			obj.DueDate = formatToStr(date);
+			obj.DueDate = formatToStr(obj.DueDate);
 		}
 	}
 });

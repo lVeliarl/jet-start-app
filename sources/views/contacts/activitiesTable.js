@@ -16,7 +16,7 @@ export default class ActivitiesTable extends JetView {
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: [{content: "richSelectFilter"}], options: activityTypes, sort: "string"},
-						{id: "convertedTime", header: [{content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
+						{id: "DueDate", header: [{content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
 						{id: "Details", header: [{content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit edit_entry'></span>"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
@@ -65,8 +65,10 @@ export default class ActivitiesTable extends JetView {
 		let id = this.getParam("id");
 		let activitiesTable = this.$$("activities");
 
-		activitiesTable.sync(activities, () => {
-			activitiesTable.filter(obj => obj.ContactID.toString() === id.toString());
+		activities.waitData.then(() => {
+			activitiesTable.sync(activities, () => {
+				activitiesTable.filter(obj => obj.ContactID.toString() === id.toString());
+			});
 		});
 
 		this.window = this.ui(PopupView);
