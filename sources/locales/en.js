@@ -53,5 +53,16 @@ export default {
 	Date: "Date",
 	Time: "Time",
 	Completed: "Completed",
-	"Please select an option": "Please select an option"
+	"Please select an option": "Please select an option",
+	"<h3>Activity types</h3>": "<h3>Activity types</h3>",
+	"<h3>Statuses</h3>": "<h3>Statuses</h3>",
+	Value: "Value",
+	"Add value": "Add value",
+	"Delete this entry": "Delete this entry",
+	"Are you sure you want to delete this entry?": "Are you sure you want to delete this entry?",
+	OK: "OK",
+	"type to find matching contacts": "type to find matching contacts",
+	"<h2>Add new contact</h2>": "<h2>Add new contact</h2>",
+	"<h2>Edit contact</h2>": "<h2>Edit contact</h2>",
+	"Edit activity": "Edit activity"
 };

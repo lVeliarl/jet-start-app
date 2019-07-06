@@ -43,7 +43,7 @@ export default class ContactsView extends JetView {
 						{
 							view: "text",
 							localId: "contactFilter",
-							placeholder: "type to find matching contacts",
+							placeholder: _("type to find matching contacts"),
 							css: "contact_filter",
 							on: {
 								onTimedKeyPress() {

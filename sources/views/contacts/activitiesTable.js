@@ -27,7 +27,9 @@ export default class ActivitiesTable extends JetView {
 						delete_entry: (e, id) => {
 							webix.confirm({
 								title: "Delete this entry",
-								text: "Are you sure you want to delete this entry?"
+								text: "Are you sure you want to delete this entry?",
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								activities.remove(id);
 							});

@@ -192,18 +192,20 @@ export default class ContactsForm extends JetView {
 	}
 
 	init() {
+		const _ = this.app.getService("locale")._;
+
 		let updateButton = this.$$("saveContact");
 		let formHeader = this.$$("formHeader");
 
 		this.on(this.app, "addContact", (item, mode) => {
-			formHeader.setHTML(`<h2>${mode} new contact</h2>`);
-			updateButton.setValue(`${mode}`);
+			formHeader.setHTML(_(`<h2>${mode} new contact</h2>`));
+			updateButton.setValue(_(`${mode}`));
 			this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
 		});
 
 		this.on(this.app, "editContact", (item, mode) => {
-			formHeader.setHTML(`<h2>${mode} contact</h2>`);
-			updateButton.setValue("Save");
+			formHeader.setHTML(_(`<h2>${mode} contact</h2>`));
+			updateButton.setValue(_("Save"));
 			this.$$("editContact").setValues(item);
 		});
 	}

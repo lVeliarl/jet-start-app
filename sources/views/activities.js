@@ -62,8 +62,10 @@ export default class ActivitiesView extends JetView {
 					onClick: {
 						delete_entry: (e, id) => {
 							webix.confirm({
-								title: "Delete this entry",
-								text: "Are you sure you want to delete this entry?"
+								title: _("Delete this entry"),
+								text: _("Are you sure you want to delete this entry?"),
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								activities.remove(id);
 							});
