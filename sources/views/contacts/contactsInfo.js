@@ -56,6 +56,7 @@ export default class ContactInfo extends JetView {
 											text: "Do you really want to remove this contact?"
 										}).then(() => {
 											contacts.remove(id);
+											this.show("contacts");
 										});
 									}
 								},
@@ -105,13 +106,17 @@ export default class ContactInfo extends JetView {
 			statuses.waitData
 		]).then(() => {
 			let id = this.getParam("id");
+			let contactsInfo = this.$$("contactsInfo");
+
 			if (contacts.exists(id)) {
 				let selectedContact = webix.copy(contacts.getItem(id));
 				let selectedStatusID = statuses.getItem(selectedContact.StatusID);
-				let contactsInfo = this.$$("contactsInfo");
 
 				selectedContact.Status = selectedStatusID.Value;
 				contactsInfo.setValues(selectedContact);
+			}
+			else if (!contacts.exists(contacts.getFirstId())) {
+				contactsInfo.setValues({});
 			}
 		});
 	}

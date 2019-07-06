@@ -39,7 +39,7 @@ export default class ActivitiesTable extends JetView {
 					on: {
 						onAfterFilter: () => {
 							let id = this.getParam("id");
-							this.$$("activities").filter(obj => obj.ContactID.toString() === id.toString());
+							this.$$("activities").filter(obj => obj.ContactID.toString() === id.toString(), "", true);
 						}
 					}
 				},
@@ -62,6 +62,13 @@ export default class ActivitiesTable extends JetView {
 	}
 
 	init() {
+		let id = this.getParam("id");
+		let activitiesTable = this.$$("activities");
+
+		activitiesTable.sync(activities, () => {
+			activitiesTable.filter(obj => obj.ContactID.toString() === id.toString());
+		});
+
 		this.window = this.ui(PopupView);
 	}
 
@@ -73,10 +80,9 @@ export default class ActivitiesTable extends JetView {
 			let id = this.getParam("id");
 			let activitiesTable = this.$$("activities");
 
-			activitiesTable.sync(activities);
-
-			activitiesTable.getFilter("TypeID").setValue("");
-			activitiesTable.filter(obj => obj.ContactID.toString() === id.toString(), true);
+			this.$$("activities").filterByAll(
+				activitiesTable.filter(obj => obj.ContactID.toString() === id.toString())
+			);
 		});
 	}
 }

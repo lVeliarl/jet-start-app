@@ -96,9 +96,11 @@ export default class PopupView extends JetView {
 
 		if (disabled) {
 			this.$$("contact").disable();
+			form.setValues({ContactID: id, convertedDate: new Date(), convertedTime: new Date()});
 		}
-
-		form.setValues(item || {ContactID: id, convertedDate: new Date(), convertedTime: new Date()});
+		else {
+			form.setValues(item || {convertedDate: new Date(), convertedTime: new Date()});
+		}
 		editButton.setValue(`${mode}`);
 		windowHeader.setHTML(`${mode} activity`);
 

@@ -198,7 +198,8 @@ export default class ContactsForm extends JetView {
 				this.$$("editContact").setValues(item);
 			}
 			if (mode === "Add") {
-				this.show("contacts");
+				this.setParam("mode", "form", true);
+				this.setParam("id", "", true);
 				formHeader.setHTML("<h2>Add new contact</h2>");
 				this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
 			}
