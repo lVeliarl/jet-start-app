@@ -98,12 +98,11 @@ export default class ContactsForm extends JetView {
 								{
 									cols: [
 										{
-											template: obj => `<img src=${obj || placeholder} width=230 height=230></img>`,
+											template: obj => `<img src=${obj}></img>`,
 											localId: "photoPreview",
 											name: "Photo",
-											width: 250,
-											height: 250,
-											borderless: true
+											borderless: true,
+											css: "photo_preview"
 										},
 										{
 											rows: [
@@ -215,12 +214,13 @@ export default class ContactsForm extends JetView {
 			let id = this.getParam("id");
 			let item = contacts.getItem(id);
 
-			if (item.Photo === "") {
+			if (!item || item.Photo === "") {
 				this.$$("photoPreview").setValues(placeholder);
 			}
 			else {
 				this.$$("photoPreview").setValues(item.Photo);
 			}
+
 			this.$$("editContact").setValues(item);
 		});
 	}
