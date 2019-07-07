@@ -62,12 +62,11 @@ export default class ActivitiesTable extends JetView {
 	}
 
 	init() {
-		let id = this.getParam("id");
 		let activitiesTable = this.$$("activities");
 
 		activities.waitData.then(() => {
 			activitiesTable.sync(activities, () => {
-				activitiesTable.filter(obj => obj.ContactID.toString() === id.toString());
+				this.$$("activities").filterByAll();
 			});
 		});
 
@@ -79,12 +78,7 @@ export default class ActivitiesTable extends JetView {
 			contacts.waitData,
 			activities.waitData
 		]).then(() => {
-			let id = this.getParam("id");
-			let activitiesTable = this.$$("activities");
-
-			this.$$("activities").filterByAll(
-				activitiesTable.filter(obj => obj.ContactID.toString() === id.toString())
-			);
+			this.$$("activities").filterByAll();
 		});
 	}
 }
