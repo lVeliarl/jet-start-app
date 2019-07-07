@@ -15,6 +15,7 @@ export default class ContactsView extends JetView {
 			width: 220,
 			select: true,
 			scroll: "auto",
+			borderless: true,
 			template: obj => `<div class='wrapper card'>
 				<div class='row'>
 					<div class='column'>
@@ -70,13 +71,15 @@ export default class ContactsView extends JetView {
 						}
 					]
 				},
-				{cells: [
-					{$subview: ContactInfo, id: "top:contactsInfo"},
-					{$subview: ContactsForm, id: "top:contactsForm"}
-				]
+				{
+					cells: [
+						{$subview: ContactInfo, id: "top:contactsInfo"},
+						{$subview: ContactsForm, id: "top:contactsForm"}
+					]
 				}
 			],
-			type: "section"
+			type: "section",
+			borderless: true
 		};
 	}
 

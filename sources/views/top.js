@@ -18,7 +18,7 @@ export default class TopView extends JetView {
 			width: 180,
 			layout: "y",
 			select: true,
-			template: "<span class='webix_icon #icon#'></span> #value# ",
+			template: "<div><span class='webix_icon #icon#'></span> #value#</div>",
 			data: [
 				{value: _("Contacts"), id: "contacts", icon: "mdi mdi-account-group"},
 				{value: _("Activities"), id: "activities", icon: "mdi mdi-calendar-month"},
@@ -38,17 +38,20 @@ export default class TopView extends JetView {
 			css: "app_layout",
 			rows: [
 				header,
-				{cols: [
-					{
-						rows: [menu]
-					},
-					{
-						type: "wide",
-						rows: [
-							{$subview: true}
-						]
-					}
-				]}
+				{
+					cols: [
+						{
+							rows: [menu],
+							css: "sidebar"
+						},
+						{
+							type: "wide",
+							rows: [
+								{$subview: true}
+							]
+						}
+					]
+				}
 			]
 		};
 

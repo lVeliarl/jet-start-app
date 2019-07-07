@@ -70,7 +70,7 @@ export default class ContactInfo extends JetView {
 										let id = this.getParam("id");
 										this.webix.confirm({
 											title: _("Delete this contact"),
-											text: _("Do you really want to remove this contatct?"),
+											text: _("Do you really want to remove this contact?"),
 											ok: _("OK"),
 											cancel: _("Cancel")
 										}).then(() => {

@@ -9,6 +9,7 @@ export default class SettingsView extends JetView {
 
 		return {
 			type: "form",
+			borderless: true,
 			rows: [
 				{
 					view: "segmented",

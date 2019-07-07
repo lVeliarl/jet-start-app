@@ -13,6 +13,7 @@ export default class ActivitiesTable extends JetView {
 				{
 					view: "datatable",
 					localId: "activities",
+					css: "table_outline",
 					scroll: "auto",
 					select: true,
 					borderless: true,
@@ -43,20 +44,23 @@ export default class ActivitiesTable extends JetView {
 						}
 					}
 				},
-				{cols: [
-					{gravity: 3},
-					{
-						view: "button",
-						type: "icon",
-						icon: "mdi mdi-plus-box",
-						label: _("Add activity"),
-						css: "webix_primary",
-						click: () => {
-							let id = this.getParam("id");
-							this.window.showWindow(null, "Add", id, true);
+				{
+					padding: 5,
+					cols: [
+						{gravity: 3},
+						{
+							view: "button",
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							label: _("Add activity"),
+							css: "webix_primary",
+							click: () => {
+								let id = this.getParam("id");
+								this.window.showWindow(null, "Add", id, true);
+							}
 						}
-					}
-				]}
+					]
+				}
 			]
 		};
 	}

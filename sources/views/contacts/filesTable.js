@@ -12,6 +12,7 @@ export default class FilesTable extends JetView {
 					view: "datatable",
 					localId: "files",
 					scroll: "auto",
+					css: "table_outline",
 					select: true,
 					borderless: true,
 					columns: [
@@ -40,6 +41,7 @@ export default class FilesTable extends JetView {
 					}
 				},
 				{
+					css: "files_line",
 					cols: [
 						{},
 						{

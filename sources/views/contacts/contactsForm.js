@@ -10,183 +10,199 @@ export default class ContactsForm extends JetView {
 
 		return {
 			rows: [
-				{template: "Edit (add new) contact", localId: "formHeader", height: 100, borderless: true},
-				{cols: [
-					{
-						view: "form",
-						localId: "editContact",
-						borderless: true,
-						elementsConfig: {
-							labelWidth: 150
-						},
-						rules: {
-							FirstName: webix.rules.isNotEmpty,
-							LastName: webix.rules.isNotEmpty,
-							StartDate: webix.rules.isNotEmpty,
-							birthDate: webix.rules.isNotEmpty
-						},
-						cols: [
-							{rows: [
-								{
-									view: "text",
-									label: _("First name"),
-									name: "FirstName"
-								},
-								{
-									view: "text",
-									label: _("Last name"),
-									name: "LastName"
-								},
-								{
-									view: "datepicker",
-									label: _("Joining date"),
-									name: "StartDate",
-									format: webix.i18n.longDateFormatStr,
-									invalidMessage: _("Please select a date")
-								},
-								{
-									view: "richselect",
-									label: _("Status"),
-									name: "StatusID",
-									options: statuses
-								},
-								{
-									view: "text",
-									label: _("Job"),
-									name: "Job"
-								},
-								{
-									view: "text",
-									label: _("Company"),
-									name: "Company"
-								},
-								{
-									view: "text",
-									label: _("Website"),
-									name: "Website"
-								},
-								{
-									view: "text",
-									label: _("Address"),
-									name: "Address",
-									height: 100
-								},
-								{}
-							],
-							margin: 20
+				{
+					template: "Edit (add new) contact",
+					localId: "formHeader",
+					height: 100,
+					borderless: true,
+					css: "form_header"
+				},
+				{
+					cols: [
+						{
+							view: "form",
+							localId: "editContact",
+							borderless: true,
+							elementsConfig: {
+								labelWidth: 150
 							},
-							{rows: [
+							rules: {
+								FirstName: webix.rules.isNotEmpty,
+								LastName: webix.rules.isNotEmpty,
+								StartDate: webix.rules.isNotEmpty,
+								birthDate: webix.rules.isNotEmpty
+							},
+							margin: 75,
+							cols: [
 								{
-									view: "text",
-									label: _("Email"),
-									name: "Email"
-								},
-								{
-									view: "text",
-									label: _("Skype"),
-									name: "Skype"
-								},
-								{
-									view: "text",
-									label: _("Phone"),
-									name: "Phone"
-								},
-								{
-									view: "datepicker",
-									label: _("Birthday"),
-									name: "birthDate",
-									format: webix.i18n.longDateFormatStr,
-									invalidMessage: _("Please select a date")
-								},
-								{
-									cols: [
+									rows: [
 										{
-											template: obj => `<img src=${obj || placeholder} width=230 height=230></img>`,
-											localId: "photoPreview",
-											name: "Photo",
-											width: 250,
-											height: 250,
-											borderless: true
+											view: "text",
+											label: _("First name"),
+											name: "FirstName"
 										},
 										{
-											rows: [
-												{},
+											view: "text",
+											label: _("Last name"),
+											name: "LastName"
+										},
+										{
+											view: "datepicker",
+											label: _("Joining date"),
+											name: "StartDate",
+											format: webix.i18n.longDateFormatStr,
+											invalidMessage: _("Please select a date")
+										},
+										{
+											view: "richselect",
+											label: _("Status"),
+											name: "StatusID",
+											options: statuses
+										},
+										{
+											view: "text",
+											label: _("Job"),
+											name: "Job"
+										},
+										{
+											view: "text",
+											label: _("Company"),
+											name: "Company"
+										},
+										{
+											view: "text",
+											label: _("Website"),
+											name: "Website"
+										},
+										{
+											view: "text",
+											label: _("Address"),
+											name: "Address",
+											height: 100
+										},
+										{}
+									],
+									margin: 20
+								},
+								{
+									rows: [
+										{
+											view: "text",
+											label: _("Email"),
+											name: "Email"
+										},
+										{
+											view: "text",
+											label: _("Skype"),
+											name: "Skype"
+										},
+										{
+											view: "text",
+											label: _("Phone"),
+											name: "Phone"
+										},
+										{
+											view: "datepicker",
+											label: _("Birthday"),
+											name: "birthDate",
+											format: webix.i18n.longDateFormatStr,
+											invalidMessage: _("Please select a date")
+										},
+										{
+											padding: 20,
+											cols: [
 												{
-													view: "uploader",
-													value: _("Change photo"),
-													accept: "image/jpeg, image/png",
-													multiple: "false",
-													on: {
-														onBeforeFileAdd: (img) => {
-															let reader = new FileReader();
-															reader.onload = (event) => {
-																this.$$("photoPreview").setValues(event.target.result);
-															};
-															reader.readAsDataURL(img.file);
-															return false;
-														}
-													}
+													template: obj => `<img src=${obj || placeholder} width=230 height=230></img>`,
+													localId: "photoPreview",
+													name: "Photo",
+													width: 250,
+													height: 250,
+													borderless: true
 												},
 												{
-													view: "button",
-													value: _("Delete photo"),
-													click: () => {
-														let item = contacts.getItem(this.getParam("id"));
-														this.$$("photoPreview").setValues(placeholder);
-														item.Photo = "";
-													}
+													rows: [
+														{},
+														{
+															view: "uploader",
+															value: _("Change photo"),
+															accept: "image/jpeg, image/png",
+															multiple: "false",
+															on: {
+																onBeforeFileAdd: (img) => {
+																	let reader = new FileReader();
+																	reader.onload = (event) => {
+																		this.$$("photoPreview").setValues(event.target.result);
+																	};
+																	reader.readAsDataURL(img.file);
+																	return false;
+																}
+															}
+														},
+														{
+															view: "button",
+															value: _("Delete photo"),
+															click: () => {
+																let item = contacts.getItem(this.getParam("id"));
+																this.$$("photoPreview").setValues(placeholder);
+																item.Photo = "";
+															}
+														}
+													],
+													margin: 10
 												}
-											],
-											margin: 10
-										}
-									]
-								},
-								{}
-							],
-							margin: 20
-							}
-						]
-					}
-				]
-				},
-				{cols: [
-					{},
-					{
-						view: "button",
-						value: _("Cancel"),
-						click: () => {
-							let form = this.$$("editContact");
-							let value = this.$$("saveContact").getValue();
-							if (value === "Add") {
-								contacts.remove(contacts.getLastId());
-							}
-							webix.$$("top:contactsInfo").show(false, false);
-							form.clear();
-							form.clearValidation();
-						}
-					},
-					{
-						view: "button",
-						value: "Save(add)",
-						localId: "saveContact",
-						css: "webix_primary",
-						click: () => {
-							let id = this.getParam("id");
-							let form = this.$$("editContact");
-							let value = form.getValues();
-							if (form.validate()) {
-								value.Photo = this.$$("photoPreview").getValues();
-								if (contacts.exists(id)) {
-									contacts.updateItem(id, value);
+											]
+										},
+										{}
+									],
+									margin: 20
 								}
-								webix.message("Entry successfully saved");
+							]
+						}
+					]
+				},
+				{
+					padding: 30,
+					cols: [
+						{},
+						{
+							view: "button",
+							value: _("Cancel"),
+							width: 200,
+							click: () => {
+								let form = this.$$("editContact");
+								let value = this.$$("saveContact").getValue();
+								if (value === "Add") {
+									contacts.remove(contacts.getLastId());
+								}
 								webix.$$("top:contactsInfo").show(false, false);
 								form.clear();
 								form.clearValidation();
 							}
+						},
+						{
+							view: "button",
+							value: "Save(add)",
+							width: 200,
+							localId: "saveContact",
+							css: "webix_primary",
+							click: () => {
+								let id = this.getParam("id");
+								let form = this.$$("editContact");
+								let value = form.getValues();
+								if (form.validate()) {
+									value.Photo = this.$$("photoPreview").getValues();
+									if (contacts.exists(id)) {
+										contacts.updateItem(id, value);
+									}
+									webix.message("Entry successfully saved");
+									webix.$$("top:contactsInfo").show(false, false);
+									form.clear();
+									form.clearValidation();
+								}
+							}
 						}
-					}
-				]}
+					]
+				}
 			]
 		};
 	}

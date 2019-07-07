@@ -14,6 +14,7 @@ export default class SettingsTable extends JetView {
 				{
 					view: "datatable",
 					localId: "settingsTable",
+					css: "table_outline",
 					scroll: "auto",
 					autoheight: true,
 					editable: true,
@@ -43,7 +44,9 @@ export default class SettingsTable extends JetView {
 						{},
 						{
 							view: "button",
-							value: _("Add value"),
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							label: _("Add value"),
 							width: 200,
 							css: "webix_primary",
 							click: () => {

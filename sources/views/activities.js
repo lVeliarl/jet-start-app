@@ -20,36 +20,41 @@ export default class ActivitiesView extends JetView {
 
 		return {
 			type: "section",
+			borderless: true,
 			rows: [
-				{cols: [
-					{
-						view: "segmented",
-						localId: "activitiesFilter",
-						value: 1,
-						options: filterOptions,
-						gravity: 4,
-						on: {
-							onChange: () => {
-								this.$$("activities").filterByAll();
+				{
+					cols: [
+						{
+							view: "segmented",
+							localId: "activitiesFilter",
+							value: 1,
+							options: filterOptions,
+							gravity: 4,
+							on: {
+								onChange: () => {
+									this.$$("activities").filterByAll();
+								}
+							}
+						},
+						{},
+						{
+							view: "button",
+							localId: "add",
+							label: _("Add activity"),
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							css: "webix_primary",
+							click: () => {
+								this.window.showWindow(null, "Add");
 							}
 						}
-					},
-					{},
-					{
-						view: "button",
-						localId: "add",
-						label: _("Add activity"),
-						type: "icon",
-						icon: "mdi mdi-plus-box",
-						css: "webix_primary",
-						click: () => {
-							this.window.showWindow(null, "Add");
-						}
-					}
-				]},
+					]
+				},
 				{
 					view: "datatable",
 					localId: "activities",
+					css: "table_outline",
+					scroll: "auto",
 					select: true,
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},

@@ -39,39 +39,43 @@ export default class PopupView extends JetView {
 					invalidMessage: _("Please select an option")
 
 				},
-				{cols: [
-					{view: "datepicker", label: _("Date"), name: "convertedDate"},
-					{view: "datepicker", type: "time", label: _("Time"), name: "convertedTime"}
-				]},
+				{
+					cols: [
+						{view: "datepicker", label: _("Date"), name: "convertedDate"},
+						{view: "datepicker", type: "time", label: _("Time"), name: "convertedTime"}
+					]
+				},
 				{view: "checkbox", name: "State", labelRight: _("Completed"), labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
-				{cols: [
-					{gravity: 4},
-					{
-						view: "button",
-						value: "Add/save",
-						localId: "saveChanges",
-						css: "webix_primary",
-						click: () => {
-							if (this.$$("popup_form").validate()) {
-								let formValues = this.$$("popup_form").getValues();
-								let id = formValues.id;
-								if (activities.exists(id)) {
-									activities.updateItem(id, formValues);
+				{
+					cols: [
+						{gravity: 4},
+						{
+							view: "button",
+							value: "Add/save",
+							localId: "saveChanges",
+							css: "webix_primary",
+							click: () => {
+								if (this.$$("popup_form").validate()) {
+									let formValues = this.$$("popup_form").getValues();
+									let id = formValues.id;
+									if (activities.exists(id)) {
+										activities.updateItem(id, formValues);
+									}
+									else { activities.add(formValues); }
+									webix.message("Entry successfully saved");
+									this.closeWindow();
 								}
-								else { activities.add(formValues); }
-								webix.message("Entry successfully saved");
+							}
+						},
+						{
+							view: "button",
+							value: _("Cancel"),
+							click: () => {
 								this.closeWindow();
 							}
 						}
-					},
-					{
-						view: "button",
-						value: _("Cancel"),
-						click: () => {
-							this.closeWindow();
-						}
-					}
-				]}
+					]
+				}
 			]
 		};
 
