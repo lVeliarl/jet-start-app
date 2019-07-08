@@ -2,12 +2,11 @@ import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
 import ContactInfo from "./contacts/contactsInfo";
 import ContactsForm from "./contacts/contactsForm";
+import {placeholder} from "../helpers/placeholder";
 
 export default class ContactsView extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
-
-		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
 
 		const contactsList = {
 			view: "list",
@@ -64,18 +63,18 @@ export default class ContactsView extends JetView {
 							label: _("Add contact"),
 							css: "webix_primary",
 							click: () => {
-								contacts.add({FirstName: "John", LastName: "Doe", StatusID: 1});
-								this.app.callEvent("addContact", [null, "Add"]);
-								webix.$$("top:contactsForm").show(false, false);
+								this.app.callEvent("editContact", ["Add"]);
+								this.setParam("id", "", true);
+								this.setParam("mode", "form", true);
 							}
 						}
 					]
 				},
-				{
-					cells: [
-						{$subview: ContactInfo, id: "top:contactsInfo"},
-						{$subview: ContactsForm, id: "top:contactsForm"}
-					]
+				{cells: [
+					{rows: [{$subview: ContactInfo}], localId: "info"},
+					{rows: [{$subview: ContactsForm}], localId: "form"}
+				],
+				animate: false
 				}
 			],
 			type: "section",
@@ -88,26 +87,46 @@ export default class ContactsView extends JetView {
 
 		contactsList.sync(contacts);
 
+		this.on(this.app, "editContact", (mode) => {
+			if (mode === "Add") {
+				this.show("/top/contacts?mode=form");
+				contactsList.unselectAll();
+			}
+			else {
+				this.setParam("mode", "form", true);
+			}
+		});
+
+		this.on(this.app, "editCancel", () => {
+			this.setParam("mode", "info", true);
+		});
+	}
+
+	urlChange() {
+		let contactsList = this.$$("contacts");
 		contacts.waitData.then(() => {
 			let id = this.getParam("id");
+			let pageMode = this.getParam("mode");
 
-			contactsList.data.attachEvent("onIdChange", () => {
-				contactsList.select(contacts.getLastId());
-			});
-
-			contacts.attachEvent("onAfterDelete", () => {
-				contactsList.select(contacts.getFirstId());
-			});
-
-			if (!contacts.exists(id)) {
-				contactsList.select(contacts.getFirstId());
+			if (!pageMode) {
+				this.setParam("mode", "info", true);
 			}
-			else if (id && id !== contactsList.getSelectedId()) {
+
+			if (!id || !contacts.exists(id)) {
+				if (pageMode !== "form") {
+					id = contacts.getFirstId();
+				}
+				else {
+					id = null;
+				}
+			}
+
+			if (id) {
 				contactsList.select(id);
+				contactsList.showItem(id);
 			}
 
-			const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
-			this.$$("photoPreview").setValues(placeholder);
+			this.$$(pageMode).show();
 		});
 	}
 }

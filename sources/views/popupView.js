@@ -41,8 +41,8 @@ export default class PopupView extends JetView {
 				},
 				{
 					cols: [
-						{view: "datepicker", label: _("Date"), name: "convertedDate"},
-						{view: "datepicker", type: "time", label: _("Time"), name: "convertedTime"}
+						{view: "datepicker", label: _("Date"), name: "DueDate"},
+						{view: "datepicker", type: "time", label: _("Time"), name: "DueTime"}
 					]
 				},
 				{view: "checkbox", name: "State", labelRight: _("Completed"), labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
@@ -94,18 +94,20 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	showWindow(item, mode, id, disabled) {
-		const _ = this.app.getService("locale")._;
-
+	showWindow(mode, id, disabled) {
+		let item = activities.getItem(id);
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
+		const _ = this.app.getService("locale")._;
 
 		if (disabled) {
 			this.$$("contact").disable();
+			form.setValues({ContactID: id, DueDate: new Date(), DueTime: new Date()});
 		}
-
-		form.setValues(item || {ContactID: id, convertedDate: new Date(), convertedTime: new Date()});
+		else {
+			form.setValues(item || {DueDate: new Date(), DueTime: new Date()});
+		}
 		editButton.setValue(_(`${mode}`));
 		windowHeader.setHTML(_(`${mode} activity`));
 

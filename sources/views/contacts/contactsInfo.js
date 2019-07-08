@@ -1,15 +1,14 @@
 import {JetView} from "webix-jet";
 import ActivitiesTable from "./activitiesTable";
 import FilesTable from "./filesTable";
-import {activities} from "../../models/activities";
 import {contacts} from "../../models/contacts";
 import {statuses} from "../../models/statuses";
+import {placeholder} from "../../helpers/placeholder";
 
 export default class ContactInfo extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
-
-		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
+		const format = webix.Date.dateToStr("%d-%m-%Y");
 
 		return {
 			rows: [
@@ -34,13 +33,14 @@ export default class ContactInfo extends JetView {
 										<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
 									</div>
 									<div class='column column3'>
-										<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
+										<span class='mdi mdi-calendar-month'>${format(obj.Birthday) || "-"}</span>
 										<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
 									</div>
 								</div>
 							</div>`,
 							localId: "contactsInfo",
-							borderless: true
+							borderless: true,
+							format: webix.i18n.dateFormatStr
 						},
 						{
 							padding: 20,
@@ -53,10 +53,7 @@ export default class ContactInfo extends JetView {
 									type: "icon",
 									icon: "mdi mdi-file-document-edit",
 									click: () => {
-										let id = this.getParam("id");
-										let item = contacts.getItem(id);
-										this.app.callEvent("editContact", [item, "Edit"]);
-										webix.$$("top:contactsForm").show(false, false);
+										this.app.callEvent("editContact", ["Save"]);
 									}
 								},
 								{
@@ -75,17 +72,13 @@ export default class ContactInfo extends JetView {
 											cancel: _("Cancel")
 										}).then(() => {
 											contacts.remove(id);
-											let contactActivities = activities.find(
-												obj => obj.ContactID.toString() === id.toString()
-											);
-											contactActivities.forEach((obj) => {
-												activities.remove(obj.id);
-											});
+											this.show("contacts");
 										});
 									}
 								},
 								{}
-							]}
+							]
+						}
 					]
 				},
 				{
@@ -118,12 +111,18 @@ export default class ContactInfo extends JetView {
 			statuses.waitData
 		]).then(() => {
 			let id = this.getParam("id");
-			let selectedContact = webix.copy(contacts.getItem(id));
-			let selectedStatusID = statuses.getItem(selectedContact.StatusID);
 			let contactsInfo = this.$$("contactsInfo");
 
-			selectedContact.Status = selectedStatusID.Value;
-			contactsInfo.setValues(selectedContact);
+			if (contacts.exists(id)) {
+				let selectedContact = webix.copy(contacts.getItem(id));
+				let selectedStatusID = statuses.getItem(selectedContact.StatusID);
+
+				selectedContact.Status = selectedStatusID.Value;
+				contactsInfo.setValues(selectedContact);
+			}
+			else if (!contacts.exists(contacts.getFirstId())) {
+				contactsInfo.setValues({});
+			}
 		});
 	}
 }
