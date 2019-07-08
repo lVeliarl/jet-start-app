@@ -24,7 +24,7 @@ export default class ContactInfo extends JetView {
 								<div class='row row2'>
 									<div class='column column1'>
 										<img src=${obj.Photo || placeholder} width=200 height=200></span>
-										<h4 class='label'>${obj.Status || "-"}</h4>
+										<h4 class='label'>${obj.StatusID} ${obj.Status || "-"}</h4>
 									</div>
 									<div class='column column2'>
 										<span class='mdi mdi-email'>${obj.Email || "-"}</span>

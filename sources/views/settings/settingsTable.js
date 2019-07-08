@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {iconOptions} from "../../models/iconOptions";
 
 export default class SettingsTable extends JetView {
 	constructor(app, name, data) {
@@ -15,14 +16,12 @@ export default class SettingsTable extends JetView {
 					view: "datatable",
 					localId: "settingsTable",
 					css: "table_outline",
-					scroll: "auto",
-					autoheight: true,
 					editable: true,
 					select: true,
-					editaction: "dblclick",
+					height: 300,
 					columns: [
 						{id: "Value", header: _("Value"), fillspace: true, editor: "text"},
-						{id: "Icon", header: _("Icon"), editor: "text", fillspace: true},
+						{id: "Icon", header: _("Icon"), template: "<span class='mdi mdi-#Icon#'></span>", editor: "richselect", options: iconOptions, fillspace: true},
 						{id: "deleteType", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
 					],
 					onClick: {

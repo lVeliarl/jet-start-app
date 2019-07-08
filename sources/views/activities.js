@@ -60,7 +60,7 @@ export default class ActivitiesView extends JetView {
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: [_("Activity type"), {content: "richSelectFilter"}], options: activityTypes, sort: "string", fillspace: true},
 						{id: "DueDate", header: [_("Due date"), {content: "dateRangeFilter", inputConfig: {format: webix.i18n.longDateFormatStr}}], sort: "date", width: 150, format: webix.i18n.longDateFormatStr},
-						{id: "Details", header: [_("Details"), {content: "multiComboFilter"}], template: "#Details#", fillspace: true, sort: "string"},
+						{id: "Details", header: [_("Details"), {content: "textFilter"}], template: "#Details#", fillspace: true, sort: "string"},
 						{id: "ContactID", header: [_("Contact"), {content: "richSelectFilter"}], options: contacts, sort: "string", fillspace: true},
 						{id: "editActivity", header: "", width: 50, template: "<span class='mdi mdi-file-document-edit edit_entry'></span>"},
 						{id: "deleteActivity", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
@@ -100,17 +100,17 @@ export default class ActivitiesView extends JetView {
 						const taskYear = value.getFullYear();
 						const taskMonth = value.getMonth();
 						const taskDay = value.getDay();
-						const currentYear = new Date().getFullYear();
-						const currentMonth = new Date().getMonth();
-						const currentDay = new Date().getDay();
+						const current = new Date();
+						const currentYear = current.getFullYear();
+						const currentMonth = current.getMonth();
+						const currentDay = current.getDay();
 						const formatToStr = webix.Date.dateToStr("%Y-%m-%d");
 						function currentWeek() {
-							let curr = new Date();
 							let week = [];
 
 							for (let i = 1; i <= 7; i++) {
-								let first = curr.getDate() - curr.getDay() + i;
-								let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
+								let first = current.getDate() - current.getDay() + i;
+								let day = new Date(current.setDate(first)).toISOString().slice(0, 10);
 								week.push(day);
 							}
 							return week.includes(formatToStr(value));
@@ -119,10 +119,10 @@ export default class ActivitiesView extends JetView {
 							return value;
 						}
 						if (convFilter === 2) {
-							return value < new Date() && item.State === "Open";
+							return value < current && item.State === "Open";
 						}
 						if (convFilter === 3) {
-							return value < new Date() && item.State === "Close";
+							return item.State === "Close";
 						}
 						if (convFilter === 4) {
 							return taskYear === currentYear &&

@@ -36,6 +36,12 @@ export default class SettingsView extends JetView {
 	toggleLanguage() {
 		const langs = this.app.getService("locale");
 		const value = this.$$("language").getValue();
+		if (value === "ru") {
+			webix.i18n.setLocale("ru-RU");
+		}
+		else {
+			webix.i18n.setLocale("en-US");
+		}
 		langs.setLang(value);
 	}
 }
