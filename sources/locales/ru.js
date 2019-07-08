@@ -67,5 +67,6 @@ export default {
 	"<h2>Edit contact</h2>": "<h2>Редактировать контакт</h2>",
 	"Edit activity": "Изменить задание",
 	"Delete this file": "Удалить этот файл",
-	"Are you sure you want to delete this file?": "Вы уверены, что хотите удалить этот файл?"
+	"Are you sure you want to delete this file?": "Вы уверены, что хотите удалить этот файл?",
+	"Entry successfully saved": "Запись успешно сохранена"
 };

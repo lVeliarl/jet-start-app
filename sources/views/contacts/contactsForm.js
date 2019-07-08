@@ -193,7 +193,7 @@ export default class ContactsForm extends JetView {
 										});
 									}
 									this.app.callEvent("editCancel");
-									webix.message("Entry successfully saved");
+									webix.message(_("Entry successfully saved"));
 									this.clearForm();
 								}
 							}

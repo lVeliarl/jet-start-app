@@ -67,5 +67,6 @@ export default {
 	"<h2>Edit contact</h2>": "<h2>Edit contact</h2>",
 	"Edit activity": "Edit activity",
 	"Delete this file": "Delete this file",
-	"Are you sure you want to delete this file?": "Are you sure you want to delete this file?"
+	"Are you sure you want to delete this file?": "Are you sure you want to delete this file?",
+	"Entry successfully saved": "Entry successfully saved"
 };

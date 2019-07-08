@@ -62,7 +62,7 @@ export default class PopupView extends JetView {
 										activities.updateItem(id, formValues);
 									}
 									else { activities.add(formValues); }
-									webix.message("Entry successfully saved");
+									webix.message(_("Entry successfully saved"));
 									this.closeWindow();
 								}
 							}

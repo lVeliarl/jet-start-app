@@ -28,8 +28,8 @@ export default class ActivitiesTable extends JetView {
 					onClick: {
 						delete_entry: (e, id) => {
 							webix.confirm({
-								title: "Delete this entry",
-								text: "Are you sure you want to delete this entry?",
+								title: _("Delete this entry"),
+								text: _("Are you sure you want to delete this entry?"),
 								ok: _("OK"),
 								cancel: _("Cancel")
 							}).then(() => {
@@ -38,7 +38,7 @@ export default class ActivitiesTable extends JetView {
 							return false;
 						},
 						edit_entry: (e, id) => {
-							this.window.showWindow("Save", id);
+							this.window.showWindow("Edit", id);
 							return false;
 						}
 					},
