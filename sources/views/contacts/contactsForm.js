@@ -29,7 +29,7 @@ export default class ContactsForm extends JetView {
 								FirstName: webix.rules.isNotEmpty,
 								LastName: webix.rules.isNotEmpty,
 								StartDate: webix.rules.isNotEmpty,
-								birthDate: webix.rules.isNotEmpty
+								Birthday: webix.rules.isNotEmpty
 							},
 							margin: 75,
 							cols: [
@@ -108,7 +108,7 @@ export default class ContactsForm extends JetView {
 											invalidMessage: _("Please select a date")
 										},
 										{
-											padding: 20,
+											padding: 10,
 											cols: [
 												{
 													template: obj => `<img src=${obj}></img>`,
@@ -178,7 +178,6 @@ export default class ContactsForm extends JetView {
 							localId: "saveContact",
 							css: "webix_primary",
 							click: () => {
-								let id = this.getParam("id");
 								let form = this.$$("editContact");
 								let value = form.getValues();
 								if (form.validate()) {
