@@ -186,26 +186,6 @@ export default class ContactsForm extends JetView {
 		};
 	}
 
-	init() {
-		let updateButton = this.$$("saveContact");
-		let formHeader = this.$$("formHeader");
-
-		this.on(this.app, "editContact", (mode) => {
-			let item = contacts.getItem(this.getParam("id"));
-			if (mode === "Save") {
-				formHeader.setHTML("<h2>Edit contact</h2>");
-				this.$$("editContact").setValues(item);
-			}
-			if (mode === "Add") {
-				this.setParam("mode", "form", true);
-				this.setParam("id", "", true);
-				formHeader.setHTML("<h2>Add new contact</h2>");
-				this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
-			}
-			updateButton.setValue(mode);
-		});
-	}
-
 	urlChange() {
 		webix.promise.all([
 			contacts.waitData,
@@ -213,6 +193,19 @@ export default class ContactsForm extends JetView {
 		]).then(() => {
 			let id = this.getParam("id");
 			let item = contacts.getItem(id);
+			let updateButton = this.$$("saveContact");
+			let formHeader = this.$$("formHeader");
+
+			if (id) {
+				formHeader.setHTML("<h2>Edit contact</h2>");
+				this.$$("editContact").setValues(item);
+				updateButton.setValue("Save");
+			}
+			else {
+				formHeader.setHTML("<h2>Add new contact</h2>");
+				this.$$("editContact").setValues({FirstName: "John", LastName: "Doe", StatusID: 1});
+				updateButton.setValue("Add");
+			}
 
 			if (!item || item.Photo === "") {
 				this.$$("photoPreview").setValues(placeholder);

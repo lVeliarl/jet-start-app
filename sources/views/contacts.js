@@ -46,13 +46,15 @@ export default class ContactsView extends JetView {
 							css: "webix_primary",
 							click: () => {
 								this.app.callEvent("editContact", ["Add"]);
+								this.setParam("id", "", true);
+								this.setParam("mode", "form", true);
 							}
 						}
 					]
 				},
 				{cells: [
-					{rows: [{$subview: ContactInfo}], localId: "top:contactsInfo"},
-					{rows: [{$subview: ContactsForm}], localId: "top:contactsForm"}
+					{rows: [{$subview: ContactInfo}], localId: "info"},
+					{rows: [{$subview: ContactsForm}], localId: "form"}
 				],
 				animate: false
 				}
@@ -66,38 +68,18 @@ export default class ContactsView extends JetView {
 
 		contactsList.sync(contacts);
 
-		contacts.waitData.then(() => {
-			let id = this.getParam("id");
-			let pageMode = this.getParam("mode");
-
-			if (!contacts.exists(id)) {
-				contactsList.select(contacts.getFirstId());
-			}
-
-			if (!pageMode) {
-				this.setParam("mode", "info", true);
-			}
-
-			if (pageMode === "info") {
-				this.$$("top:contactsInfo").show();
-			}
-
-			if (pageMode === "form") {
-				this.$$("top:contactsForm").show();
-			}
-		});
-
 		this.on(this.app, "editContact", (mode) => {
-			this.setParam("mode", "form", true);
 			if (mode === "Add") {
+				this.show("/top/contacts?mode=form");
 				contactsList.unselectAll();
 			}
-			this.$$("top:contactsForm").show();
+			else {
+				this.setParam("mode", "form", true);
+			}
 		});
 
 		this.on(this.app, "editCancel", () => {
 			this.setParam("mode", "info", true);
-			this.$$("top:contactsInfo").show();
 		});
 	}
 
@@ -107,18 +89,25 @@ export default class ContactsView extends JetView {
 			let id = this.getParam("id");
 			let pageMode = this.getParam("mode");
 
-			if (!id && pageMode !== "form") {
-				this.setParam("id", contacts.getFirstId(), true);
+			if (!pageMode) {
+				this.setParam("mode", "info", true);
 			}
 
-			if (id && !contacts.exists(id) && contacts.exists(contacts.getFirstId())) {
-				this.setParam("id", contacts.getFirstId(), true);
+			if (!id || !contacts.exists(id)) {
+				if (pageMode !== "form") {
+					id = contacts.getFirstId();
+				}
+				else {
+					id = null;
+				}
 			}
 
-			if (id && id !== contactsList.getSelectedId() && contacts.exists(id)) {
+			if (id) {
 				contactsList.select(id);
 				contactsList.showItem(id);
 			}
+
+			this.$$(pageMode).show();
 		});
 	}
 }
