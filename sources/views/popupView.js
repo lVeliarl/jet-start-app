@@ -30,6 +30,7 @@ export default class PopupView extends JetView {
 				},
 				{
 					view: "richselect",
+					localId: "contact",
 					label: "Contact",
 					name: "ContactID",
 					options: contacts,
@@ -37,8 +38,8 @@ export default class PopupView extends JetView {
 
 				},
 				{cols: [
-					{view: "datepicker", label: "Date", name: "convertedDate"},
-					{view: "datepicker", type: "time", label: "Time", name: "convertedTime"}
+					{view: "datepicker", label: "Date", name: "DueDate"},
+					{view: "datepicker", type: "time", label: "Time", name: "DueTime"}
 				]},
 				{view: "checkbox", name: "State", labelRight: "Selected", labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
 				{cols: [
@@ -87,16 +88,23 @@ export default class PopupView extends JetView {
 		};
 	}
 
-	showWindow(item, mode) {
+	showWindow(mode, id, disabled) {
+		let item = activities.getItem(id);
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
 
-		this.getRoot().show();
-
-		form.setValues(item || {convertedDate: new Date(), convertedTime: new Date()});
+		if (disabled) {
+			this.$$("contact").disable();
+			form.setValues({ContactID: id, DueDate: new Date(), DueTime: new Date()});
+		}
+		else {
+			form.setValues(item || {DueDate: new Date(), DueTime: new Date()});
+		}
 		editButton.setValue(`${mode}`);
 		windowHeader.setHTML(`${mode} activity`);
+
+		this.getRoot().show();
 	}
 
 	closeWindow() {

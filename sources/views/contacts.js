@@ -1,11 +1,11 @@
 import {JetView} from "webix-jet";
 import {contacts} from "../models/contacts";
-import {statuses} from "../models/statuses";
+import ContactInfo from "./contacts/contactsInfo";
+import ContactsForm from "./contacts/contactsForm";
+import {placeholder} from "../helpers/placeholder";
 
 export default class ContactsView extends JetView {
 	config() {
-		const placeholder = "http://diazworld.com/images/avatar-placeholder.png";
-
 		const contactsList = {
 			view: "list",
 			localId: "contacts",
@@ -35,45 +35,28 @@ export default class ContactsView extends JetView {
 
 		return {
 			cols: [
-				contactsList,
 				{
-					cols: [
+					rows: [
+						contactsList,
 						{
-							template: obj => `<div class='wrapper info'>
-								<div class='row row1'>
-									<div class='column column1'>
-										<h2 class='contacts_name'>${obj.FirstName || "-"} ${obj.LastName || "-"} </h2>
-									</div>
-								</div>
-								<div class='row row2'>
-									<div class='column column1'>
-										<span class='photo'></span>
-										<h4 class='label'>${obj.Status || "-"}</h4>
-									</div>
-									<div class='column column2'>
-										<span class='mdi mdi-email'>${obj.Email || "-"}</span>
-										<span class='mdi mdi-skype'>${obj.Skype || "-"}</span>
-										<span class='mdi mdi-tag'>${obj.Job || "-"}</span>
-										<span class='mdi mdi-briefcase'>${obj.Company || "-"}</span>
-									</div>
-									<div class='column column3'>
-										<span class='mdi mdi-calendar-month'>${obj.Birthday || "-"}</span>
-										<span class='mdi mdi-map-marker'>${obj.Address || "-"}</span>
-									</div>
-								</div>
-							</div>`,
-							localId: "contactsInfo",
-							borderless: true
-						},
-						{rows: [
-							{cols: [
-								{view: "button", label: "Delete", css: "webix_primary", type: "icon", icon: "mdi mdi-trash-can"},
-								{view: "button", label: "Edit", css: "webix_primary", type: "icon", icon: "mdi mdi-file-document-edit"}
-							],
-							width: 200},
-							{}
-						]}
+							view: "button",
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							label: "Add contact",
+							css: "webix_primary",
+							click: () => {
+								this.app.callEvent("editContact", ["Add"]);
+								this.setParam("id", "", true);
+								this.setParam("mode", "form", true);
+							}
+						}
 					]
+				},
+				{cells: [
+					{rows: [{$subview: ContactInfo}], localId: "info"},
+					{rows: [{$subview: ContactsForm}], localId: "form"}
+				],
+				animate: false
 				}
 			],
 			type: "section"
@@ -82,31 +65,50 @@ export default class ContactsView extends JetView {
 
 	init() {
 		let contactsList = this.$$("contacts");
+
 		contactsList.sync(contacts);
 
-		contacts.waitData.then(() => {
-			let id = this.getParam("id");
+		this.on(this.app, "editContact", (mode) => {
+			if (mode === "Add") {
+				this.show("/top/contacts?mode=form");
+				contactsList.unselectAll();
+			}
+			else {
+				this.setParam("mode", "form", true);
+			}
+		});
 
-			if (!contacts.exists(id)) {
-				contactsList.select(contacts.getFirstId());
-			}
-			else if (id && id !== contactsList.getSelectedId()) {
-				contactsList.select(id);
-			}
+		this.on(this.app, "editCancel", () => {
+			this.setParam("mode", "info", true);
 		});
 	}
 
 	urlChange() {
-		webix.promise.all([
-			contacts.waitData,
-			statuses.waitData
-		]).then(() => {
+		let contactsList = this.$$("contacts");
+		contacts.waitData.then(() => {
 			let id = this.getParam("id");
-			let selectedContact = webix.copy(contacts.getItem(id));
-			let selectedStatusID = statuses.getItem(selectedContact.StatusID);
+			let pageMode = this.getParam("mode");
 
-			selectedContact.Status = selectedStatusID.Value;
-			this.$$("contactsInfo").setValues(selectedContact);
+			if (!pageMode) {
+				this.setParam("mode", "info", true);
+			}
+
+			if (!id || !contacts.exists(id)) {
+				if (pageMode !== "form") {
+					id = contacts.getFirstId();
+				}
+				else {
+					id = null;
+				}
+			}
+
+			if (id) {
+				contactsList.select(id);
+				contactsList.showItem(id);
+			}
+
+			this.$$(pageMode).show();
 		});
 	}
 }
+

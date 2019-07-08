@@ -106,3 +106,21 @@
 .wrapper .mdi::before {
     margin: 0 5px 0 0;
 }
+
+.info h2 {
+    font-size: 34px;
+}
+
+.webix_template h2 {
+    margin: 0;
+}
+
+.photo_preview .webix_template {
+    display: flex;
+    align-items: center;
+}
+
+.photo_preview img {
+    max-width: 100%;
+    max-height: 100%;
+}
