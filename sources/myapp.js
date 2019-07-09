@@ -15,6 +15,7 @@ export default class MyApp extends JetApp {
 	}
 }
 
+
 if (!BUILD_AS_MODULE) {
 	webix.ready(() => {
 		const app = new MyApp();
@@ -24,6 +25,15 @@ if (!BUILD_AS_MODULE) {
 			webix.delay(() => app.show("/top/contacts"));
 		});
 		webix.CustomScroll.init();
+
+		let lang = webix.storage.local.get("lang");
+
+		if (lang === "ru") {
+			webix.i18n.setLocale("ru-RU");
+		}
+		else {
+			webix.i18n.setLocale("en-US");
+		}
 	});
 }
 

@@ -49,7 +49,11 @@ export default class SettingsTable extends JetView {
 							width: 200,
 							css: "webix_primary",
 							click: () => {
-								this._gridData.add({Value: "Value", Icon: "checkbox-marked"});
+								this._gridData.waitSave(() => {
+									this._gridData.add({Value: "Value", Icon: "checkbox-marked"});
+								}).then((res) => {
+									this.$$("settingsTable").showItem(res.id);
+								});
 							}
 						}
 					]
