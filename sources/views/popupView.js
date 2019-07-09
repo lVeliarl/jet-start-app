@@ -5,6 +5,8 @@ import {contacts} from "../models/contacts";
 
 export default class PopupView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const popupForm = {
 			view: "form",
 			localId: "popup_form",
@@ -16,60 +18,64 @@ export default class PopupView extends JetView {
 			elements: [
 				{
 					view: "text",
-					label: "Details",
+					label: _("Details"),
 					height: 100,
 					name: "Details",
 					resize: true
 				},
 				{
 					view: "richselect",
-					label: "Type",
+					label: _("Type"),
 					name: "TypeID",
 					options: activityTypes,
-					invalidMessage: "Please select an option"
+					invalidMessage: _("Please select an option")
 				},
 				{
 					view: "richselect",
 					localId: "contact",
-					label: "Contact",
+					label: _("Contact"),
 					name: "ContactID",
 					options: contacts,
-					invalidMessage: "Please select an option"
+					invalidMessage: _("Please select an option")
 
 				},
-				{cols: [
-					{view: "datepicker", label: "Date", name: "DueDate"},
-					{view: "datepicker", type: "time", label: "Time", name: "DueTime"}
-				]},
-				{view: "checkbox", name: "State", labelRight: "Selected", labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
-				{cols: [
-					{gravity: 4},
-					{
-						view: "button",
-						value: "Add/save",
-						localId: "saveChanges",
-						css: "webix_primary",
-						click: () => {
-							if (this.$$("popup_form").validate()) {
-								let formValues = this.$$("popup_form").getValues();
-								let id = formValues.id;
-								if (activities.exists(id)) {
-									activities.updateItem(id, formValues);
+				{
+					cols: [
+						{view: "datepicker", label: _("Date"), name: "DueDate"},
+						{view: "datepicker", type: "time", label: _("Time"), name: "DueTime"}
+					]
+				},
+				{view: "checkbox", name: "State", labelRight: _("Completed"), labelWidth: 0, checkValue: "Close", uncheckValue: "Open"},
+				{
+					cols: [
+						{gravity: 4},
+						{
+							view: "button",
+							value: "Add/save",
+							localId: "saveChanges",
+							css: "webix_primary",
+							click: () => {
+								if (this.$$("popup_form").validate()) {
+									let formValues = this.$$("popup_form").getValues();
+									let id = formValues.id;
+									if (activities.exists(id)) {
+										activities.updateItem(id, formValues);
+									}
+									else { activities.add(formValues); }
+									webix.message(_("Entry successfully saved"));
+									this.closeWindow();
 								}
-								else { activities.add(formValues); }
-								webix.message("Entry successfully saved");
+							}
+						},
+						{
+							view: "button",
+							value: _("Cancel"),
+							click: () => {
 								this.closeWindow();
 							}
 						}
-					},
-					{
-						view: "button",
-						value: "Cancel",
-						click: () => {
-							this.closeWindow();
-						}
-					}
-				]}
+					]
+				}
 			]
 		};
 
@@ -93,6 +99,7 @@ export default class PopupView extends JetView {
 		let form = this.$$("popup_form");
 		let editButton = this.$$("saveChanges");
 		let windowHeader = this.$$("windowHeader");
+		const _ = this.app.getService("locale")._;
 
 		if (disabled) {
 			this.$$("contact").disable();
@@ -101,8 +108,8 @@ export default class PopupView extends JetView {
 		else {
 			form.setValues(item || {DueDate: new Date(), DueTime: new Date()});
 		}
-		editButton.setValue(`${mode}`);
-		windowHeader.setHTML(`${mode} activity`);
+		editButton.setValue(_(`${mode}`));
+		windowHeader.setHTML(_(`${mode} activity`));
 
 		this.getRoot().show();
 	}

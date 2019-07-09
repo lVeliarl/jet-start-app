@@ -4,19 +4,23 @@ import {fileStorage} from "../../models/fileStorage";
 
 export default class FilesTable extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
 					view: "datatable",
 					localId: "files",
 					scroll: "auto",
+					css: "table_outline",
 					select: true,
+					borderless: true,
 					columns: [
-						{id: "name", header: "Name", template: "", fillspace: true, sort: "string"},
-						{id: "date", header: "Change date", template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
+						{id: "name", header: _("Name"), template: "", fillspace: true, sort: "string"},
+						{id: "date", header: _("Change date"), template: "", width: 150, sort: "date", format: webix.i18n.longDateFormatStr},
 						{
 							id: "size",
-							header: "Size",
+							header: _("Size"),
 							template: obj => `${obj.size}Kb`,
 							sort: "int"
 						},
@@ -25,8 +29,10 @@ export default class FilesTable extends JetView {
 					onClick: {
 						delete_file: (e, id) => {
 							webix.confirm({
-								title: "Delete this file",
-								text: "Are you sure you want to delete this file?"
+								title: _("Delete this file"),
+								text: _("Are you sure you want to delete this file?"),
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								this.$$("files").remove(id);
 							});
@@ -35,6 +41,7 @@ export default class FilesTable extends JetView {
 					}
 				},
 				{
+					css: "files_line",
 					cols: [
 						{},
 						{
@@ -42,11 +49,12 @@ export default class FilesTable extends JetView {
 							localId: "uploadFiles",
 							type: "icon",
 							icon: "mdi mdi-cloud-upload",
-							label: "Upload file",
+							label: _("Upload file"),
 							css: "webix_primary"
 						},
 						{}
-					]}
+					]
+				}
 			]
 		};
 	}

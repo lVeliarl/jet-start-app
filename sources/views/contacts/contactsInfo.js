@@ -7,6 +7,7 @@ import {placeholder} from "../../helpers/placeholder";
 
 export default class ContactInfo extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const format = webix.Date.dateToStr("%d-%m-%Y");
 
 		return {
@@ -23,7 +24,7 @@ export default class ContactInfo extends JetView {
 								<div class='row row2'>
 									<div class='column column1'>
 										<img src=${obj.Photo || placeholder} width=200 height=200></span>
-										<h4 class='label'>${obj.Status || "-"}</h4>
+										<div class = "status"><span class='webix_icon mdi mdi-${obj.Icon || "-"}'></span> <h4 class='label'>${obj.Status || "-"}</h4></div>
 									</div>
 									<div class='column column2'>
 										<span class='mdi mdi-email'>${obj.Email || "-"}</span>
@@ -41,47 +42,51 @@ export default class ContactInfo extends JetView {
 							borderless: true,
 							format: webix.i18n.dateFormatStr
 						},
-						{rows: [
-							{cols: [
+						{
+							padding: 20,
+							rows: [
 								{
 									view: "button",
-									label: "Delete",
+									label: _("Edit"),
+									css: "webix_primary",
+									width: 250,
+									type: "icon",
+									icon: "mdi mdi-file-document-edit",
+									click: () => {
+										this.app.callEvent("editContact", ["Save"]);
+									}
+								},
+								{
+									view: "button",
+									label: _("Delete"),
 									css: "webix_primary",
 									type: "icon",
+									width: 250,
 									icon: "mdi mdi-trash-can",
 									click: () => {
 										let id = this.getParam("id");
 										this.webix.confirm({
-											title: "Delete this contact",
-											text: "Do you really want to remove this contact?"
+											title: _("Delete this contact"),
+											text: _("Do you really want to remove this contact?"),
+											ok: _("OK"),
+											cancel: _("Cancel")
 										}).then(() => {
 											contacts.remove(id);
 											this.show("contacts");
 										});
 									}
 								},
-								{
-									view: "button",
-									label: "Edit",
-									css: "webix_primary",
-									type: "icon",
-									icon: "mdi mdi-file-document-edit",
-									click: () => {
-										this.app.callEvent("editContact", ["Save"]);
-									}
-								}
-							],
-							width: 200},
-							{}
-						]}
+								{}
+							]
+						}
 					]
 				},
 				{
 					view: "segmented",
 					multiview: true,
 					options: [
-						{id: "activitiesSwitch", value: "Activities"},
-						{id: "filesSwitch", value: "Files"}
+						{id: "activitiesSwitch", value: _("Activities")},
+						{id: "filesSwitch", value: _("Files")}
 					]
 				},
 				{
@@ -113,6 +118,7 @@ export default class ContactInfo extends JetView {
 				let selectedStatusID = statuses.getItem(selectedContact.StatusID);
 
 				selectedContact.Status = selectedStatusID.Value;
+				selectedContact.Icon = selectedStatusID.Icon;
 				contactsInfo.setValues(selectedContact);
 			}
 			else if (!contacts.exists(contacts.getFirstId())) {

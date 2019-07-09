@@ -2,25 +2,27 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView {
 	config() {
-		let header = {
+		const _ = this.app.getService("locale")._;
+
+		const header = {
 			type: "header",
 			localId: "header",
 			template: this.app.config.name,
 			css: "webix_header app_header"
 		};
 
-		let menu = {
+		const menu = {
 			view: "menu",
 			id: "top:menu",
 			css: "app_menu",
 			width: 180,
 			layout: "y",
 			select: true,
-			template: "<span class='webix_icon #icon#'></span> #value# ",
+			template: "<div><span class='webix_icon #icon#'></span> #value#</div>",
 			data: [
-				{value: "Contacts", id: "contacts", icon: "mdi mdi-account-group"},
-				{value: "Activities", id: "activities", icon: "mdi mdi-calendar-month"},
-				{value: "Settings", id: "settings", icon: "mdi mdi-cogs"}
+				{value: _("Contacts"), id: "contacts", icon: "mdi mdi-account-group"},
+				{value: _("Activities"), id: "activities", icon: "mdi mdi-calendar-month"},
+				{value: _("Settings"), id: "settings", icon: "mdi mdi-cogs"}
 			],
 			on: {
 				onAfterSelect: (id) => {
@@ -30,23 +32,26 @@ export default class TopView extends JetView {
 			}
 		};
 
-		let ui = {
+		const ui = {
 			type: "clean",
 			paddingX: 5,
 			css: "app_layout",
 			rows: [
 				header,
-				{cols: [
-					{
-						rows: [menu]
-					},
-					{
-						type: "wide",
-						rows: [
-							{$subview: true}
-						]
-					}
-				]}
+				{
+					cols: [
+						{
+							rows: [menu],
+							css: "sidebar"
+						},
+						{
+							type: "wide",
+							rows: [
+								{$subview: true}
+							]
+						}
+					]
+				}
 			]
 		};
 

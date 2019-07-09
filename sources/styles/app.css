@@ -48,7 +48,7 @@
 }
 
 .app_header.webix_header .webix_template {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(228, 228, 228);
 }
 
 .app_layout.webix_layout_clean{
@@ -60,6 +60,10 @@
 .app_menu .webix_icon{
 	font-size:20px;
 	vertical-align:middle;
+}
+
+.sidebar {
+    border-right: 1px solid black;
 }
 
 .row {
@@ -88,12 +92,6 @@
     align-items: center;
 }
 
-.wrapper .photo {
-    width: 200px;
-    height: 200px;
-    border: 1px solid black
-}
-
 .wrapper .label {
     text-align: center;
 }
@@ -115,6 +113,22 @@
     margin: 0;
 }
 
+::-webkit-input-placeholder {
+    font-style: italic;
+ }
+
+ .webix_layout_line.files_line {
+    border-top: 1px solid black;
+ }
+
+ .table_outline .webix_column {
+    border-right: 1px solid rgb(228, 228, 228);
+ }
+
+ .form_header .webix_template {
+     display: flex;
+     align-items: center;
+ }
 .photo_preview .webix_template {
     display: flex;
     align-items: center;
@@ -123,4 +137,13 @@
 .photo_preview img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+}
+
+.status .mdi {
+    font-size: 20px;
 }

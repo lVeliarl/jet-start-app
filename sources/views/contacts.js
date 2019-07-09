@@ -6,12 +6,15 @@ import {placeholder} from "../helpers/placeholder";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const contactsList = {
 			view: "list",
 			localId: "contacts",
 			width: 220,
 			select: true,
 			scroll: "auto",
+			borderless: true,
 			template: obj => `<div class='wrapper card'>
 				<div class='row'>
 					<div class='column'>
@@ -37,12 +40,27 @@ export default class ContactsView extends JetView {
 			cols: [
 				{
 					rows: [
+						{
+							view: "text",
+							localId: "contactFilter",
+							placeholder: _("type to find matching contacts"),
+							css: "contact_filter",
+							on: {
+								onTimedKeyPress() {
+									let value = this.getValue().toLowerCase();
+									contacts.filter((obj) => {
+										const filterValues = [obj.FirstName, obj.LastName, obj.Company].join("|");
+										return filterValues.toLowerCase().indexOf(value) !== -1;
+									});
+								}
+							}
+						},
 						contactsList,
 						{
 							view: "button",
 							type: "icon",
 							icon: "mdi mdi-plus-box",
-							label: "Add contact",
+							label: _("Add contact"),
 							css: "webix_primary",
 							click: () => {
 								this.app.callEvent("editContact", ["Add"]);
@@ -59,7 +77,8 @@ export default class ContactsView extends JetView {
 				animate: false
 				}
 			],
-			type: "section"
+			type: "section",
+			borderless: true
 		};
 	}
 

@@ -6,13 +6,17 @@ import PopupView from "../popupView";
 
 export default class ActivitiesTable extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
 					view: "datatable",
 					localId: "activities",
+					css: "table_outline",
 					scroll: "auto",
 					select: true,
+					borderless: true,
 					columns: [
 						{id: "State", header: "", template: "{common.checkbox()}", checkValue: "Close", uncheckValue: "Open", width: 50},
 						{id: "TypeID", header: [{content: "richSelectFilter"}], options: activityTypes, sort: "string"},
@@ -24,15 +28,17 @@ export default class ActivitiesTable extends JetView {
 					onClick: {
 						delete_entry: (e, id) => {
 							webix.confirm({
-								title: "Delete this entry",
-								text: "Are you sure you want to delete this entry?"
+								title: _("Delete this entry"),
+								text: _("Are you sure you want to delete this entry?"),
+								ok: _("OK"),
+								cancel: _("Cancel")
 							}).then(() => {
 								activities.remove(id);
 							});
 							return false;
 						},
 						edit_entry: (e, id) => {
-							this.window.showWindow("Save", id);
+							this.window.showWindow("Edit", id);
 							return false;
 						}
 					},
@@ -43,20 +49,23 @@ export default class ActivitiesTable extends JetView {
 						}
 					}
 				},
-				{cols: [
-					{gravity: 3},
-					{
-						view: "button",
-						type: "icon",
-						icon: "mdi mdi-plus-box",
-						label: "Add activity",
-						css: "webix_primary",
-						click: () => {
-							let id = this.getParam("id");
-							this.window.showWindow("Add", id, true);
+				{
+					padding: 5,
+					cols: [
+						{gravity: 3},
+						{
+							view: "button",
+							type: "icon",
+							icon: "mdi mdi-plus-box",
+							label: _("Add activity"),
+							css: "webix_primary",
+							click: () => {
+								let id = this.getParam("id");
+								this.window.showWindow("Add", id, true);
+							}
 						}
-					}
-				]}
+					]
+				}
 			]
 		};
 	}
