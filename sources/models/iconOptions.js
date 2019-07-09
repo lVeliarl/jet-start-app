@@ -1,11 +1,20 @@
 export const iconOptions = new webix.DataCollection({
+	scheme: {
+		$init: (obj) => {
+			obj.value = `<span class="webix_icon mdi mdi-${obj.Value}"></span>`;
+		}
+	},
 	data: [
-		{id: "sync", value: "sync"},
-		{id: "alert", value: "alert"},
-		{id: "clock", value: "clock"},
-		{id: "close", value: "close"},
-		{id: "flag", value: "flag"},
-		{id: "comment", value: "comment"},
-		{id: "phone", value: "phone"}
+		{id: "sync", Value: "sync"},
+		{id: "alert", Value: "alert"},
+		{id: "clock", Value: "clock"},
+		{id: "close", Value: "close"},
+		{id: "flag", Value: "flag"},
+		{id: "comment", Value: "comment"},
+		{id: "phone", Value: "phone"},
+		{id: "pause-circle", Value: "pause-circle"},
+		{id: "food", Value: "food"},
+		{id: "checkbox-marked", Value: "checkbox-marked"},
+		{id: "file-document-box-multiple", Value: "file-document-box-multiple"}
 	]
 });

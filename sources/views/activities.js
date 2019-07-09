@@ -88,60 +88,51 @@ export default class ActivitiesView extends JetView {
 	}
 
 	init() {
-		this.$$("activities").sync(activities);
+		this.$$("activities").sync(activities, () => {
+			this.$$("activities").filterByAll();
+		});
 		this.window = this.ui(PopupView);
 
 		activities.waitData.then(() => {
 			this.$$("activities").registerFilter(
 				this.$$("activitiesFilter"), {
-					columnId: "DueDate",
 					compare(value, filter, item) {
 						const convFilter = parseInt(filter);
-						const taskYear = value.getFullYear();
-						const taskMonth = value.getMonth();
-						const taskDay = value.getDay();
+						const date = item.DueDate;
+						const taskMonth = webix.Date.monthStart(date);
+						const taskDay = webix.Date.dayStart(date);
+						const taskWeek = webix.Date.weekStart(date);
 						const current = new Date();
-						const currentYear = current.getFullYear();
-						const currentMonth = current.getMonth();
-						const currentDay = current.getDay();
-						const formatToStr = webix.Date.dateToStr("%Y-%m-%d");
-						function currentWeek() {
-							let week = [];
-
-							for (let i = 1; i <= 7; i++) {
-								let first = current.getDate() - current.getDay() + i;
-								let day = new Date(current.setDate(first)).toISOString().slice(0, 10);
-								week.push(day);
-							}
-							return week.includes(formatToStr(value));
-						}
+						const currentMonth = webix.Date.monthStart(current);
+						const currentWeek = webix.Date.weekStart(current);
+						const currentDay = webix.Date.dayStart(current);
+						const tomorrow = webix.Date.add(webix.Date.dayStart(current), 1, "day");
 						if (convFilter === 1) {
-							return value;
+							return date;
 						}
 						if (convFilter === 2) {
-							return value < current && item.State === "Open";
+							return date < current && item.State === "Open";
 						}
 						if (convFilter === 3) {
 							return item.State === "Close";
 						}
 						if (convFilter === 4) {
-							return taskYear === currentYear &&
-							taskMonth === currentMonth &&
-							taskDay === currentDay;
+							return webix.Date.equal(currentDay, taskDay) &&
+							item.State === "Open";
 						}
 						if (convFilter === 5) {
-							return taskYear === currentYear &&
-							taskMonth === currentMonth &&
-							taskDay === currentDay + 1;
+							return webix.Date.equal(taskDay, tomorrow) &&
+							item.State === "Open";
 						}
 						if (convFilter === 6) {
-							return currentWeek();
+							return webix.Date.equal(taskWeek, currentWeek) &&
+							item.State === "Open";
 						}
 						if (convFilter === 7) {
-							return taskYear === currentYear &&
-							taskMonth === currentMonth;
+							return webix.Date.equal(taskMonth, currentMonth) &&
+							item.State === "Open";
 						}
-						return value;
+						return item;
 					}
 				},
 				{

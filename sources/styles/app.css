@@ -138,3 +138,12 @@
     max-width: 100%;
     max-height: 100%;
 }
+
+.status {
+    display: flex;
+    align-items: center;
+}
+
+.status .mdi {
+    font-size: 20px;
+}

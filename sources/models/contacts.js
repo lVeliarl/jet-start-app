@@ -8,7 +8,6 @@ export const contacts = new webix.DataCollection({
 	save: "rest->http://localhost:8096/api/v1/contacts/",
 	scheme: {
 		$change: (obj) => {
-			console.log(obj);
 			obj.value = `${obj.FirstName} ${obj.LastName}`;
 			obj.StartDate = formatToDate(obj.StartDate);
 			obj.Birthday = formatToDate(obj.Birthday);

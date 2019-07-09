@@ -21,7 +21,7 @@ export default class SettingsTable extends JetView {
 					height: 300,
 					columns: [
 						{id: "Value", header: _("Value"), fillspace: true, editor: "text"},
-						{id: "Icon", header: _("Icon"), template: "<span class='mdi mdi-#Icon#'></span>", editor: "richselect", options: iconOptions, fillspace: true},
+						{id: "Icon", header: _("Icon"), editor: "richselect", options: iconOptions, fillspace: true},
 						{id: "deleteType", header: "", width: 50, template: "<span class='mdi mdi-trash-can delete_entry'></span>"}
 					],
 					onClick: {
@@ -49,7 +49,7 @@ export default class SettingsTable extends JetView {
 							width: 200,
 							css: "webix_primary",
 							click: () => {
-								this._gridData.add({Value: "Value", Icon: "Icon"});
+								this._gridData.add({Value: "Value", Icon: "checkbox-marked"});
 							}
 						}
 					]
