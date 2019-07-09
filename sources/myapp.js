@@ -20,20 +20,17 @@ if (!BUILD_AS_MODULE) {
 	webix.ready(() => {
 		const app = new MyApp();
 		app.render();
-		app.use(plugins.Locale, {lang: "en", storage: webix.storage.local});
+		app.use(plugins.Locale, {
+			lang: "en",
+			storage: webix.storage.local,
+			webix: {
+				en: "en-US",
+				ru: "ru-RU"
+			}});
 		app.attachEvent("app:error:resolve", () => {
 			webix.delay(() => app.show("/top/contacts"));
 		});
 		webix.CustomScroll.init();
-
-		let lang = webix.storage.local.get("lang");
-
-		if (lang === "ru") {
-			webix.i18n.setLocale("ru-RU");
-		}
-		else {
-			webix.i18n.setLocale("en-US");
-		}
 	});
 }
 
